@@ -6,5 +6,15 @@ dist/
 wheels/
 *.egg-info
 
-# Virtual environments
-.venv
+# Arquivos temporários do Python (Caso use ambientes virtuais locais no Ubuntu/WSL)
+__pycache__/
+*.pyc
+venv/
+.venv/
+env/
+
+# Configurações de Editores de Código e SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

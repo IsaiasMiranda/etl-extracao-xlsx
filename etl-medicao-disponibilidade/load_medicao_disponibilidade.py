@@ -3,7 +3,7 @@ load_medicao_disponibilidade.py
 
 Lê planilhas de Medição de Disponibilidade (layout largo: Equipes, FALTAS,
 uma coluna por dia, Total Geral, VLR_HR), monta o modelo unpivot final e
-consolida todos os arquivos de uma pasta de origem.
+consolida todos os arquivos de uma pasta de origem num único arquivo CSV.
 
 Colunas do modelo final:
     arquivo_origem, tipo_equipe, Equipe, Faltas, Data, Qtd_Horas,
@@ -208,7 +208,7 @@ def processar_boletins(
     pasta_processados.mkdir(parents=True, exist_ok=True)
 
     logger.info("=" * 60)
-    logger.info("CONSOLIDAÇÃO DE MEDIÇÕES DE DISPONIBILIDADE")
+    logger.info("CONSOLIDAÇÃO DE MEDIÇÕES DE DISPONIBILIDADE (CSV)")
     logger.info(f"Origem : {pasta_origem}")
     logger.info(f"Destino: {pasta_destino}")
     logger.info("=" * 60)
@@ -216,7 +216,8 @@ def processar_boletins(
     arquivos = list(pasta_origem.glob("*.xlsx"))
     arquivos = [f for f in arquivos if not f.name.startswith('~$')]
 
-    consolidados = list(pasta_destino.glob("medicao-disponibilidade-consolidada_*.xlsx"))
+    # Ajustado para buscar consolidados no formato .csv
+    consolidados = list(pasta_destino.glob("medicao-disponibilidade-consolidada_*.csv"))
     nomes_consolidados = {f.name for f in consolidados}
     arquivos = [f for f in arquivos if f.name not in nomes_consolidados]
 
@@ -260,14 +261,14 @@ def processar_boletins(
     df_final.sort_values(by=['Equipe', 'Data'], inplace=True, ignore_index=True)
 
     timestamp = pd.Timestamp.now().strftime('%Y%m%d%H%M%S')
-    caminho_consolidado = pasta_destino / f'medicao-disponibilidade-consolidada_{timestamp}.xlsx'
+    caminho_consolidado = pasta_destino / f'medicao-disponibilidade-consolidada_{timestamp}.csv'
 
     logger.info(f"Gravando arquivo consolidado: {caminho_consolidado.name} ...")
     try:
-        with pd.ExcelWriter(caminho_consolidado, engine='openpyxl') as writer:
-            df_final.to_excel(writer, index=False, sheet_name='Disponibilidades')
+        # Passando o caminho completo do arquivo, e não apenas a pasta
+        df_final.to_csv(caminho_consolidado, index=False, sep=';', encoding='utf-8-sig')
     except PermissionError:
-        logger.error("ERRO: O arquivo final está bloqueado por outro processo. Feche-o antes de executar.")
+        logger.error("ERRO: O arquivo final está bloqueado por outro processo ou sem permissão de escrita.")
         return
 
     total_salvas = len(df_final)
