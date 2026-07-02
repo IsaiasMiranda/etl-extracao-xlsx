@@ -2,6 +2,7 @@ import unicodedata
 import re
 import shutil
 import warnings
+import zipfile
 from datetime import datetime
 from pathlib import Path
 
@@ -148,7 +149,7 @@ def processar_boletins(pasta_origem_input: str, pasta_destino_input: str, pasta_
     df_final = df_final[col_presentes + col_extras]
 
     # ---------------------------------------------------------
-    # FASE 3: SEGMENTAÇÃO POR MÊS/ANO E EXPORTAÇÃO
+    # FASE 3: SEGMENTAÇÃO POR MÊS/ANO E EXPORTAÇÃO (CSV)
     # ---------------------------------------------------------
     print("A analisar datas e a criar ficheiros segmentados...")
     
@@ -163,7 +164,9 @@ def processar_boletins(pasta_origem_input: str, pasta_destino_input: str, pasta_
 
     for mes in meses_unicos:
         df_mes = df_final[df_final['Mes_Ano'] == mes].drop(columns=['Mes_Ano'])
-        nome_arquivo_saida = f"siga_consolidado_{mes}_{data_hoje}.xlsx"
+        
+        # Alterado para extensão .csv
+        nome_arquivo_saida = f"siga_consolidado_{mes}_{data_hoje}.csv"
         caminho_saida = pasta_destino / nome_arquivo_saida
         
         print(f" -> A guardar {nome_arquivo_saida} ({len(df_mes)} linhas)...")
@@ -173,30 +176,36 @@ def processar_boletins(pasta_origem_input: str, pasta_destino_input: str, pasta_
             try:
                 caminho_saida.unlink()
             except PermissionError:
-                print(f"\n[ERRO] O ficheiro {nome_arquivo_saida} está aberto no Excel. Feche-o!")
+                print(f"\n[ERRO] O ficheiro {nome_arquivo_saida} está aberto. Feche-o!")
                 continue
 
-        # DEFESA 3: Nome da aba 'Base_Consolidada' para evitar o bug 'Planilha1'
+        # Exporta como CSV utilizando to_csv em vez de to_excel
         try:
-            try:
-                df_mes.to_excel(caminho_saida, index=False, engine='xlsxwriter', sheet_name='Base_Consolidada')
-            except ImportError:
-                df_mes.to_excel(caminho_saida, index=False, engine='openpyxl', sheet_name='Base_Consolidada')
+            df_mes.to_csv(caminho_saida, index=False, sep=';', encoding='utf-8-sig')
         except Exception as e:
             print(f"[!] Erro crítico ao guardar {nome_arquivo_saida}: {e}")
 
     # ---------------------------------------------------------
-    # FASE 4: BACKUP E AUDITORIA
+    # FASE 4: BACKUP E AUDITORIA (COMPACTAÇÃO ZIP)
     # ---------------------------------------------------------
-    print("\nA mover ficheiros processados para Backup...")
-    for caminho in arquivos_processados_com_sucesso:
-        destino_backup = pasta_backup / caminho.name
+    print("\nA compactar e mover ficheiros processados para Backup...")
+    if arquivos_processados_com_sucesso:
+        # Formato YYYYMMDDHHMMSS para garantir nome único
+        timestamp_zip = datetime.now().strftime('%Y%m%d%H%M%S')
+        nome_zip = f"arquivo-processado_{timestamp_zip}.zip"
+        caminho_zip = pasta_backup / nome_zip
+
         try:
-            if destino_backup.exists():
-                destino_backup.unlink()
-            shutil.move(str(caminho), str(destino_backup))
+            # Abre/Cria o arquivo ZIP no modo de compressão
+            with zipfile.ZipFile(caminho_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                for caminho in arquivos_processados_com_sucesso:
+                    # Adiciona o arquivo dentro do ZIP usando apenas o nome dele (arcname)
+                    zipf.write(caminho, arcname=caminho.name)
+                    # Exclui o arquivo original da pasta source após compactá-lo com sucesso
+                    caminho.unlink()
+            print(f" -> ✅ Arquivos compactados com sucesso em: {nome_zip}")
         except Exception as e:
-            print(f" -> Erro ao mover {caminho.name}: {e}")
+            print(f" -> [!] Erro ao criar o arquivo ZIP de backup: {e}")
 
     total_linhas_destino = len(df_final)
     
@@ -205,7 +214,7 @@ def processar_boletins(pasta_origem_input: str, pasta_destino_input: str, pasta_
     print("="*60)
     print(f"FICHEIROS DE ORIGEM (.xlsx):")
     print(f" -> Lidos na pasta origem:  {len(arquivos)}")
-    print(f" -> Movidos para o backup:  {len(arquivos_processados_com_sucesso)}")
+    print(f" -> Compactados p/ backup:  {len(arquivos_processados_com_sucesso)}")
     
     print(f"\nAUDITORIA DE DADOS:")
     print(f" -> Colunas Mapeadas:       {len(df_final.columns) - 1} campos únicos encontrados")

@@ -12,11 +12,11 @@ def main():
     print("="*60)
 
     # 1. Caminhos Base (Utilizando pathlib para maior segurança)
-    base_dir = Path(r'D:\One-Drive\Amper Elinsa\Bases Siga - Documentos\Medições')
+    base_dir = Path(r'D:\base-geral\base-siga-medicao\source\Medições')
     
     pasta_origem  = base_dir
-    pasta_destino = base_dir / 'base-consolidada'
-    pasta_backup  = base_dir / 'arquivo-processado'
+    pasta_destino = Path(r'D:\base-geral\base-siga-medicao\base-consolidada')
+    pasta_processada  = Path(r'D:\base-geral\base-siga-medicao\arquivo-processado')
 
     # 2. Validação básica de diretórios
     if not pasta_origem.exists():
@@ -25,7 +25,7 @@ def main():
 
     print(f"Origem  -> {pasta_origem}")
     print(f"Destino -> {pasta_destino}")
-    print(f"Backup  -> {pasta_backup}")
+    print(f"Processada  -> {pasta_processada}")
     print("\nIniciando o processamento dos dados... Por favor, aguarde.")
     
     # 3. Executa o motor de processamento, capturando eventuais quebras críticas com detalhes
@@ -33,7 +33,7 @@ def main():
         processar_boletins(
             pasta_origem_input=str(pasta_origem),
             pasta_destino_input=str(pasta_destino),
-            pasta_backup_input=str(pasta_backup)
+            pasta_backup_input=str(pasta_processada)  # Correção aplicada aqui
         )
     except Exception as e:
         print("\n" + "!"*60)

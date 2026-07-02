@@ -10,9 +10,9 @@ logging.basicConfig(
 )
 
 if __name__ == '__main__':
-    origem = Path(r'D:\One-Drive\Amper Elinsa\Fabiano Braz da Silva - Boletins de Medição\PARÁ')
-    destino = origem / 'base-consolidado'
-    processados = origem / 'arquivos-processados'
+    origem = Path(r'D:\base-geral\base-boletim-medicao\source\PARÁ')
+    destino = Path(r'D:\base-geral\base-boletim-medicao\base-consolidado')
+    processados = Path(r'D:\base-geral\base-boletim-medicao\arquivos-processados')
 
     logger = logging.getLogger(__name__)
     logger.info("Iniciando o processamento dos boletins de medição...")
