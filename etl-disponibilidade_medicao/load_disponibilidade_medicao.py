@@ -213,7 +213,7 @@ def processar_boletins(
     logger.info(f"Destino: {pasta_destino}")
     logger.info("=" * 60)
 
-    arquivos = list(pasta_origem.glob("*.xlsx"))
+    arquivos = list(pasta_origem.rglob("*.xlsx"))
     arquivos = [f for f in arquivos if not f.name.startswith('~$')]
 
     # Ajustado para buscar consolidados no formato .csv
@@ -234,14 +234,9 @@ def processar_boletins(
     total_linhas = 0
 
     for idx, caminho in enumerate(arquivos, start=1):
-        destino_previsto = pasta_processados / caminho.name
-        if destino_previsto.exists():
-            prefixo = random.randint(1000, 9999)
-            nome_saida = f"{prefixo} - {caminho.name}"
-        else:
-            nome_saida = caminho.name
+        nome_saida = caminho.name # Mantém o nome original sempre
 
-        logger.info(f"[{idx}/{total_arquivos}] Lendo: {caminho.name} ...")
+        logger.info(f"[{idx}/{total_arquivos}] Lendo: {caminho.name} ...")    
         dfs, sucesso = _processar_arquivo(caminho, nome_saida=nome_saida)
         if sucesso and dfs:
             total_linhas += sum(len(df) for df in dfs)
@@ -289,18 +284,21 @@ def processar_boletins(
             logger.warning(f"  - {arq.name}")
 
     if arquivos_lidos:
-        logger.info(f"\nMovendo {len(arquivos_lidos)} arquivo(s) para a pasta de histórico...")
-        movidos = 0
+        logger.info(f"\nCopiando {len(arquivos_lidos)} arquivo(s) para a pasta de histórico...")
+        copiados = 0
         for caminho_origem, nome_saida in arquivos_lidos:
             destino_arq = pasta_processados / nome_saida
             try:
-                if nome_saida != caminho_origem.name:
-                    logger.warning(f"  ⚠️ Conflito de nomes: '{caminho_origem.name}' salvo como '{nome_saida}' para evitar sobrescrita.")
-                shutil.move(str(caminho_origem), str(destino_arq))
-                movidos += 1
+                # Se o arquivo já existir na pasta de destino, exclui antes de copiar o novo
+                if destino_arq.exists():
+                    destino_arq.unlink()
+                
+                # Usa shutil.copy2 no lugar de shutil.move para preservar os metadados do arquivo
+                shutil.copy2(str(caminho_origem), str(destino_arq))
+                copiados += 1
             except Exception as e:
-                logger.error(f"Falha ao mover {caminho_origem.name}: {e}")
-        logger.info(f"✅ {movidos} arquivo(s) arquivados com sucesso.")
+                logger.error(f"Falha ao copiar {caminho_origem.name}: {e}")
+        logger.info(f"✅ {copiados} arquivo(s) copiados com sucesso.")
 
     logger.info("=" * 60)
     logger.info("EXECUÇÃO CONCLUÍDA COM SUCESSO!")

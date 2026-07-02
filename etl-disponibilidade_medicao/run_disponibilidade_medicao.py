@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from load_medicao_disponibilidade import processar_boletins
+from load_disponibilidade_medicao import processar_boletins
 
 logging.basicConfig(
     level=logging.INFO,
@@ -10,17 +10,17 @@ logging.basicConfig(
 
 if __name__ == '__main__':
     # Definição dos novos caminhos apontados para Medição de Disponibilidades
-    origem = Path(r'D:\One-Drive\Amper Elinsa\MEDICAO_DISPONIBILIDADES - Documentos')
-    destino = origem / 'arquivo-consolidado'
-    processados = origem / 'arquivo-processado'
+    origem = Path(r'D:\base-geral\base-disponibilidade-medicao\source\MEDICAO_DISPONIBILIDADES - Documentos')
+    arquivo_consolidado = Path(r'D:\base-geral\base-disponibilidade-medicao\arquivo-consolidado')
+    arquivo_processado = Path(r'D:\base-geral\base-disponibilidade-medicao\arquivo-processado')
 
     logger = logging.getLogger(__name__)
     logger.info("Iniciando rotina de consolidação e unpivot de Disponibilidades...")
 
     processar_boletins(
         pasta_origem=origem,
-        pasta_destino=destino,
-        pasta_processados=processados
+        pasta_destino=arquivo_consolidado,
+        pasta_processados=arquivo_processado
     )
 
     logger.info("Rotina finalizada.")
