@@ -1,7 +1,7 @@
 [project]
-name = "ws-bm"
+name = "etl-extracao-xlsx"
 version = "0.1.0"
-description = "Add your description here"
+description = "Conjunto de pipelines ETL para extração, limpeza e consolidação de planilhas Excel de medição."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

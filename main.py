@@ -1,5 +1,5 @@
 def main():
-    print("Hello from ws-bm!")
+    print("Hello from etl-extracao-xlsx!")
 
 
 if __name__ == "__main__":
