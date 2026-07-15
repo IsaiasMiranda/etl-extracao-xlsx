@@ -10,7 +10,7 @@ logging.basicConfig(
 )
 
 if __name__ == '__main__':
-    origem = Path(r'D:\base-geral\base-boletim-medicao\source\PARÁ')
+    origem = Path(r'D:\base-geral\base-boletim-medicao\source')
     destino = Path(r'D:\base-geral\base-boletim-medicao\base-consolidado')
     processados = Path(r'D:\base-geral\base-boletim-medicao\arquivos-processados')
 

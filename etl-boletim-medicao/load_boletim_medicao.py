@@ -194,6 +194,14 @@ def _localizar_linha_cabecalho(df_bruto: pd.DataFrame) -> int:
     return -1
 
 
+def _remover_linha_somatorio(df: pd.DataFrame) -> pd.DataFrame:
+    if 'valor' not in df.columns:
+        return df
+    outras_colunas = [c for c in df.columns if c != 'valor']
+    e_somatorio = df[outras_colunas].isna().all(axis=1) & df['valor'].notna()
+    return df[~e_somatorio]
+
+
 def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
     dados_aba = list(sheet.iter_rows(values_only=True))
     if not dados_aba:
@@ -218,6 +226,8 @@ def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
     df_tabela = df_tabela.loc[:, ~df_tabela.columns.duplicated()]
 
     df_tabela.rename(columns=MAPEAMENTO, inplace=True)
+
+    df_tabela = _remover_linha_somatorio(df_tabela)
 
     df_tabela['arquivo_origem'] = nome_arquivo
 
