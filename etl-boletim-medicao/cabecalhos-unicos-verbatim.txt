@@ -1,0 +1,52 @@
+Total de arquivos: 674
+Cabecalhos distintos (verbatim, exatos): 15
+Abas sem cabecalho reconhecido: 2
+
+=== Cabecalho unico #1 (usado em 535 aba(s); exemplos: ['01 - AgrupamentoMedicao_110256-1-06042026-49074(1).xlsx', '01 - AgrupamentoMedicao_110256-1-06042026-49074.xlsx', '02 - AgrupamentoMedicao_110256-2-07042026-49154(1).xlsx']) ===
+('IdentificadorMedicao', 'IdentificadorAgrupamento', 'Distribuidora', 'Regional', 'Competencia', 'TipoMedicao', 'Contrato', 'Processo', 'Parceiro', 'Municipio', 'DescricaoNotaFiscal', 'Boletim', 'Valor', 'TextoBoletim', 'ColetorCusto', 'CM', 'IVA', 'DomicilioFiscal', 'CodigoTarifaFiscal')
+
+=== Cabecalho unico #2 (usado em 40 aba(s); exemplos: ['1180 - EQTL PA - BM -ELINSA - MED FINAL-JUNHO26_LOTE 02_15.06.2026(1).xlsx', '1180 - EQTL PA - BM -ELINSA - MED FINAL-JUNHO26_LOTE 02_15.06.2026.xlsx', '1280 - EQTL PA - BM -ELINSA - MED ÚNICA-JUNHO26_LOTE 01_12.06.2026(1).xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Boletim de Medição', 'Valor', 'Data De Envio Do Boletim ', 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)', 'CENTRO', 'IVA', 'Nº Nota Fiscal', 'CONTRATO', 'NOTA PROJ', 'DomicilioFiscal', 'CodigoTarifaFiscal')
+
+=== Cabecalho unico #3 (usado em 27 aba(s); exemplos: ['0cdfe9c2473ad2e831ff279ecb53a6f3018743a0c3b9e3df3b4fe5781b1 (2)(1).xlsx', '0cdfe9c2473ad2e831ff279ecb53a6f3018743a0c3b9e3df3b4fe5781b1 (2).xlsx', '0cdfe9c2473ad2e831ff279ecb53a6f3018743a0c3b9e3df3b4fe5781b1(1).xlsx']) ===
+(None, 'Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Boletim de Medição', 'Valor', 'Data De Envio Do Boletim ', 'CONTRATO', 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)', 'CP', 'IVA', 'DomicilioFiscal', 'CodigoTarifaFiscal', 'NF')
+
+=== Cabecalho unico #4 (usado em 22 aba(s); exemplos: ['1995 - Cópia de EQTL PA - BM - MED UNICA (002) (003) (002)(1).xlsx', '1995 - Cópia de EQTL PA - BM - MED UNICA (002) (003) (002).xlsx', '2019 - 34 - EQTL PA - BM - MED UNICA (002) (003).xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Folha de Registro', 'Valor', 'Data De Envio Do Boletim ', 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)', 'CM', 'IVA', 'Nº Nota Fiscal', 'DomicilioFiscal', 'CodigoTarifaFiscal')
+
+=== Cabecalho unico #5 (usado em 17 aba(s); exemplos: ['01296433e9fd3f01ccab5106dbedcf1b3cb06c749651b04aa3f68a737e2(1).xlsx', '01296433e9fd3f01ccab5106dbedcf1b3cb06c749651b04aa3f68a737e2.xlsx', '1431 - 79 - BM - EQTL PA  PLPT INVESTIMENTO - ELINSA - MAIO.2026.xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Boletim de Medição', 'Valor', 'Data De Envio Do Boletim ', 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)', 'CM', 'IVA', 'Nº Nota Fiscal', 'DomicilioFiscal', 'CodigoTarifaFiscal')
+
+=== Cabecalho unico #6 (usado em 8 aba(s); exemplos: ['3006 - BOLETIM EQTL PA ELINSA(1).xlsx', '3006 - BOLETIM EQTL PA ELINSA.xlsx', '7958 - BOLETIM EQTL PA ELINSA(1).xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Folha de Registro', 'Valor', 'Data De Envio Do Boletim ', 'CM', 'IVA', 'Nº Nota Fiscal', 'DomicilioFiscal', 'CodigoTarifaFiscal')
+
+=== Cabecalho unico #7 (usado em 6 aba(s); exemplos: ['2553 - 38 - BM - EQTL PA  MTBT INVESTIMENTO - ELINSA - ABRIL.2026.xlsx', '37 - BM - EQTL PA  PLPT INVESTIMENTO - ELINSA - ABRIL.2026(1).xlsx', '37 - BM - EQTL PA  PLPT INVESTIMENTO - ELINSA - ABRIL.2026.xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Boletim de Medição', 'Valor', 'Data De Envio Do Boletim ', 'CM', 'IVA', 'Nº Nota Fiscal', 'CodigoTarifaFiscal')
+
+=== Cabecalho unico #8 (usado em 4 aba(s); exemplos: ['5822 - 87 - BASE FOLHAS ELINSA GERAL MAI - boletins(1).xlsx', '5822 - 87 - BASE FOLHAS ELINSA GERAL MAI - boletins.xlsx', '87 - BASE FOLHAS ELINSA GERAL MAI - boletins(1).xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Folha de Registro', 'Valor', 'Data De Envio Do Boletim ', 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)', 'CM', 'IVA', 'Nº Nota Fiscal', 'DomicilioFiscal', 'CodigoTarifaFiscal', nan)
+
+=== Cabecalho unico #9 (usado em 3 aba(s); exemplos: ['32 - BOLETIM EQTL PA ELINSA(1).xlsx', '32 - BOLETIM EQTL PA ELINSA.xlsx', '4754 - 32 - BOLETIM EQTL PA ELINSA.xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Boletim de Medição', 'Valor', 'Data De Envio Do Boletim ', 'CP', 'IVA', 'Nº Nota Fiscal', 'CodigoTarifaFiscal')
+
+=== Cabecalho unico #10 (usado em 3 aba(s); exemplos: ['33 - BM - EQTL PA  PLPT INVESTIMENTO - ELINSA - ABRIL.2026(1).xlsx', '33 - BM - EQTL PA  PLPT INVESTIMENTO - ELINSA - ABRIL.2026.xlsx', '6622 - 33 - BM - EQTL PA  PLPT INVESTIMENTO - ELINSA - ABRIL.2026.xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Boletim de Medição', 'Valor', 'Data De Envio Do Boletim ', 'CM', 'IVA', 'Nº Nota Fiscal', 'DomicilioFiscal', 'CodigoTarifaFiscal')
+
+=== Cabecalho unico #11 (usado em 3 aba(s); exemplos: ['36 - EQTL PA - BM - ELINSA - MED UNICA - ABR-2026_CUSTEIO (002)(1).xlsx', '36 - EQTL PA - BM - ELINSA - MED UNICA - ABR-2026_CUSTEIO (002).xlsx', '7758 - 36 - EQTL PA - BM - ELINSA - MED UNICA - ABR-2026_CUSTEIO (002).xlsx']) ===
+(None, 'Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Boletim de Medição', 'Valor', 'Data De Envio Do Boletim ', 'CP', 'IVA')
+
+=== Cabecalho unico #12 (usado em 2 aba(s); exemplos: ['3182 - BOLETIM EQTL PA ELINSA(1).xlsx', '3182 - BOLETIM EQTL PA ELINSA.xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Folha de Registro', 'Valor', 'Data De Envio Do Boletim ', 'CM', 'IVA', 'Nº Nota Fiscal', 'Domicilio Fiscal', 'Cód.tarifa fiscal')
+
+=== Cabecalho unico #13 (usado em 2 aba(s); exemplos: ['35 - EQTL PA - BM - ELINSA - MED UNICA - MAR-ABR_INVEST_V2 (003) (002)(1).xlsx', '5422 - 35 - EQTL PA - BM - ELINSA - MED UNICA - MAR-ABR_INVEST_V2 (003) (002).xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Boletim de Medição', 'Valor', 'Data De Envio Do Boletim ', 'CONTRATO', 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)', 'CP', 'IVA')
+
+=== Cabecalho unico #14 (usado em 1 aba(s); exemplos: ['35 - EQTL PA - BM - ELINSA - MED UNICA - MAR-ABR_INVEST_V2 (003) (002).xlsx']) ===
+(None, 'Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Boletim de Medição', 'Valor', 'Data De Envio Do Boletim ', 'CONTRATO', 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)', 'CP', 'IVA')
+
+=== Cabecalho unico #15 (usado em 1 aba(s); exemplos: ['87 - BASE FOLHAS ELINSA GERAL MAI - boletins.xlsx']) ===
+('Distribuidora', 'Regional', 'Tipo de Medição\n(Cust/Invest/Ativ)', 'Estrutura\n(Prod/Disp)', 'Medição\n(Ciclo/Final/Pend)', 'Período de Medição', 'Parceiro', 'Município', 'Equipe', 'Descrição Da Nota Fiscal', 'Folha de Registro', 'Valor', 'Data De Envio Do Boletim ', 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)', 'CM', 'IVA', 'Nº Nota Fiscal', 'DomicilioFiscal', 'CodigoTarifaFiscal', nan, nan)
+
+--- Sem cabecalho reconhecido / erros ---
+3182 - BOLETIM EQTL PA ELINSA(1).xlsx :: auxiliar
+3182 - BOLETIM EQTL PA ELINSA.xlsx :: auxiliar

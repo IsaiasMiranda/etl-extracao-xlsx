@@ -15,170 +15,75 @@ logger = logging.getLogger(__name__)
 # MAPEAMENTO COMPLETO (todas as variações → padrão)
 # ------------------------------------------------------------------
 MAPEAMENTO = {
-    # ------------------------------------------------------------------
-    # Boletim
-    # ------------------------------------------------------------------
-    'boletim de medição': 'boletim',
-    'boletim de medicao': 'boletim',
-    'folha de registro': 'boletim',
-    'boletim': 'boletim',
-
-    # ------------------------------------------------------------------
-    # Nota fiscal
-    # ------------------------------------------------------------------
-    'nº nota fiscal': 'nota_fiscal',
-    'n° nota fiscal': 'nota_fiscal',
-    'no nota fiscal': 'nota_fiscal',
-    'numero nota fiscal': 'nota_fiscal',
-    'número nota fiscal': 'nota_fiscal',
-    'nota fiscal': 'nota_fiscal',
-    'nota_fiscal': 'nota_fiscal',
-    'nf': 'nota_fiscal',
-
-    # ------------------------------------------------------------------
-    # Valor
-    # ------------------------------------------------------------------
-    'valor total': 'valor',
-    'valor bruto': 'valor',
-    'valor': 'valor',
-
-    # ------------------------------------------------------------------
-    # Data de envio
-    # ------------------------------------------------------------------
-    'data de envio do boletim': 'data_envio',
-    'data de envio': 'data_envio',
-    'data envio': 'data_envio',
-    'data_envio': 'data_envio',
-
-    # ------------------------------------------------------------------
-    # Origem de lançamento
-    # ------------------------------------------------------------------
-    'coletor custo': 'origem_lancamento',
-    'coletorcusto': 'origem_lancamento',
-    'origem de lançamento (pep, diagr, ord, cc)': 'origem_lancamento',
-    'origem de lancamento (pep, diagr, ord, cc)': 'origem_lancamento',
-    'origem de lançamento (pep,diagr,ord,cc)': 'origem_lancamento',
-    'origem de lancamento (pep,diagr,ord,cc)': 'origem_lancamento',
-    'origem de lançamento\n(pep, diagr, ord, cc)': 'origem_lancamento',
-    'origem de lançamento': 'origem_lancamento',
-    'origem de lancamento': 'origem_lancamento',
-    'origem_lancamento': 'origem_lancamento',
-
-    # ------------------------------------------------------------------
-    # Município
-    # ------------------------------------------------------------------
-    'município': 'municipio',
-    'municipio': 'municipio',
-
-    # ------------------------------------------------------------------
-    # Competência / Período
-    # ------------------------------------------------------------------
-    'período de medição': 'competencia',
-    'periodo de medição': 'competencia',
-    'período de medicao': 'competencia',
-    'periodo de medicao': 'competencia',
-    'período': 'competencia',
-    'periodo': 'competencia',
-    'competência': 'competencia',
-    'competencia': 'competencia',
-
-    # ------------------------------------------------------------------
-    # Descrição da nota fiscal
-    # ------------------------------------------------------------------
-    'descrição da nota fiscal': 'descricaonotafiscal',
-    'descricao da nota fiscal': 'descricaonotafiscal',
-    'descrição nota fiscal': 'descricaonotafiscal',
-    'descricao nota fiscal': 'descricaonotafiscal',
-    'descricaonotafiscal': 'descricaonotafiscal',
-
-    # ------------------------------------------------------------------
-    # CP / CM
-    # ------------------------------------------------------------------
-    'cm': 'cp',
-    'cp': 'cp',
-    'centro': 'cp',
-
-    # ------------------------------------------------------------------
-    # Tipo de medição – todas as variações identificadas
-    # Cobre: acentuação, erro tipográfico "medicão", parênteses opcionais
-    # ------------------------------------------------------------------
-    'tipo de medição (cust/invest/ativ)': 'tipomedicao',
-    'tipo de medição (cust/invest/atividade)': 'tipomedicao',
-    'tipo de medicão (cust/invest/ativ)': 'tipomedicao',
-    'tipo de medicão (cust/invest/atividade)': 'tipomedicao',
-    'tipo de medicao (cust/invest/ativ)': 'tipomedicao',
-    'tipo de medicao (cust/invest/atividade)': 'tipomedicao',
-    'tipo de medição\n(cust/invest/ativ)': 'tipomedicao',
-    'tipo de medição': 'tipomedicao',
-    'tipo de medicão': 'tipomedicao',
-    'tipo de medicao': 'tipomedicao',
-    'tipomedicao': 'tipomedicao',
-
-    # ------------------------------------------------------------------
-    # Estrutura
-    # ------------------------------------------------------------------
-    'estrutura (prod/disp)': 'estrutura',
-    'estrutura(prod/disp)': 'estrutura',
-    'estrutura (prod / disp)': 'estrutura',
-    'estrutura\n(prod/disp)': 'estrutura',
-    'estrutura': 'estrutura',
-
-    # ------------------------------------------------------------------
-    # Medição (ciclo) – todas as variações
-    # Cobre: acentuação, espaço extra no "fin al", parênteses opcionais
-    # ------------------------------------------------------------------
-    'medição (ciclo/final/pend)': 'medicao',
-    'medição (ciclo/fin al/pend)': 'medicao',
-    'medicão (ciclo/final/pend)': 'medicao',
-    'medicao (ciclo/final/pend)': 'medicao',
-    'medicão (ciclo/fin al/pend)': 'medicao',
-    'medicao (ciclo/fin al/pend)': 'medicao',
-    'medição\n(ciclo/final/pend)': 'medicao',
-    'medição': 'medicao',
-    'medicão': 'medicao',
-    'medicao': 'medicao',
-
-    # ------------------------------------------------------------------
-    # Campos já padronizados — entradas defensivas incluídas
-    # ------------------------------------------------------------------
     'distribuidora': 'distribuidora',
     'regional': 'regional',
+    'tipodemedição(cust/invest/ativ)': 'tipo_medicao',
+    'tipomedicao': 'tipo_medicao',
+    'estrutura(prod/disp)': 'estrutura',
+    'medição(ciclo/final/pend)': 'medicao',
+    'períododemedição': 'periodo_medicao',
+    'competencia': 'periodo_medicao',
     'parceiro': 'parceiro',
+    'município': 'municipio',
+    'municipio': 'municipio',
     'equipe': 'equipe',
+    'descriçãodanotafiscal': 'desc_nota_fiscal',
+    'descricaonotafiscal': 'desc_nota_fiscal',
+    'folhaderegistro': 'boletim',
+    'boletim': 'boletim',
+    'boletimdemedição': 'boletim',
+    'valor': 'valor_bm',
+    'datadeenviodoboletim': 'data_envio_bm',
+    'cm': 'cp',
+    'centro': 'cp',
+    'cp': 'cp',
     'iva': 'iva',
-    'domicilio fiscal': 'domiciliofiscal',
-    'domicílio fiscal': 'domiciliofiscal',
-    'domiciliofiscal': 'domiciliofiscal',
-    'codigo tarifafiscal': 'codigotarifafiscal',
-    'código tarifa fiscal': 'codigotarifafiscal',
-    'codigotarifafiscal': 'codigotarifafiscal',
+    'nºnotafiscal': 'nota_fiscal',
+    'nf': 'nota_fiscal',
+    'domiciliofiscal': 'domicilio_fiscal',
+    'codigotarifafiscal': 'codigo_tarifa_fiscal',
+    'cód.tarifafiscal': 'codigo_tarifa_fiscal',
+    'identificadormedicao': 'identificador_medicao',
+    'identificadoragrupamento': 'identificador_agrupamento',
+    'contrato': 'contrato',
+    'processo': 'processo',
+    'textoboletim': 'texto_boletim',
+    'coletorcusto': 'origem_lancamento',
+    'origemdelançamento(pep,diagr,ord,cc)': 'origem_lancamento',
+    'notaproj': 'nota_prol',
 }
 
+# Colunas removidas do modelo final (não fazem mais parte do consolidado)
+COLUNAS_REMOVIDAS = ['nota_fiscal', 'nota_prol']
+
 # ------------------------------------------------------------------
-# ORDEM FINAL DAS COLUNAS (as colunas "centro" e "nota proj"
-# não estão nesta lista e serão adicionadas automaticamente no final)
+# ORDEM FINAL DAS COLUNAS (a coluna "centro" não está nesta lista
+# e será adicionada automaticamente no final)
 # ------------------------------------------------------------------
 ORDEM_PADRAO = [
-    'arquivo_origem',
     'distribuidora',
     'regional',
-    'tipomedicao',
+    'tipo_medicao',
     'estrutura',
-    'medicao',          # corrigido: era 'medição' (com acento), mas o MAPEAMENTO padroniza para 'medicao'
-    'competencia',
+    'medicao',
+    'periodo_medicao',
     'parceiro',
     'municipio',
     'equipe',
-    'descricaonotafiscal',
+    'desc_nota_fiscal',
     'boletim',
-    'valor',
-    'data_envio',
+    'valor_bm',
+    'data_envio_bm',
     'origem_lancamento',
     'cp',
     'iva',
-    'nota_fiscal',
-    'domiciliofiscal',
-    'codigotarifafiscal'
+    'domicilio_fiscal',
+    'codigo_tarifa_fiscal',
+    'identificador_medicao',
+    'identificador_agrupamento',
+    'contrato',
+    'processo',
+    'texto_boletim',
 ]
 
 
@@ -189,16 +94,20 @@ ORDEM_PADRAO = [
 def _localizar_linha_cabecalho(df_bruto: pd.DataFrame) -> int:
     for i, row in df_bruto.iterrows():
         linha_texto = ' '.join(row.fillna('').astype(str)).lower()
-        if 'distribuidora' in linha_texto and 'regional' in linha_texto:
+        if (
+            'distribuidora' in linha_texto
+            and 'regional' in linha_texto
+            and 'valor' in linha_texto
+        ):
             return i
     return -1
 
 
 def _remover_linha_somatorio(df: pd.DataFrame) -> pd.DataFrame:
-    if 'valor' not in df.columns:
+    if 'valor_bm' not in df.columns:
         return df
-    outras_colunas = [c for c in df.columns if c != 'valor']
-    e_somatorio = df[outras_colunas].isna().all(axis=1) & df['valor'].notna()
+    outras_colunas = [c for c in df.columns if c != 'valor_bm']
+    e_somatorio = df[outras_colunas].isna().all(axis=1) & df['valor_bm'].notna()
     return df[~e_somatorio]
 
 
@@ -214,7 +123,9 @@ def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
         return None
 
     df_tabela = df_bruto.iloc[linha_cabecalho:].copy()
-    df_tabela.columns = df_tabela.iloc[0].astype(str).str.strip().str.lower()
+    df_tabela.columns = (
+        df_tabela.iloc[0].astype(str).str.lower().str.replace(r'\s+', '', regex=True)
+    )
     df_tabela = df_tabela.iloc[1:].copy()
 
     df_tabela.dropna(axis=1, how='all', inplace=True)
@@ -226,6 +137,7 @@ def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
     df_tabela = df_tabela.loc[:, ~df_tabela.columns.duplicated()]
 
     df_tabela.rename(columns=MAPEAMENTO, inplace=True)
+    df_tabela.drop(columns=COLUNAS_REMOVIDAS, errors='ignore', inplace=True)
 
     df_tabela = _remover_linha_somatorio(df_tabela)
 
@@ -342,10 +254,16 @@ def processar_boletins(
     logger.info("\nConcatenando dados...")
     df_final = pd.concat(todos_dfs, ignore_index=True)
 
-    # --- Ordenação final: colunas padrão primeiro, extras depois ---
+    # --- Ordenação final: colunas padrão, depois extras, arquivo_origem sempre por último ---
     colunas_presentes = [col for col in ORDEM_PADRAO if col in df_final.columns]
-    colunas_extras = [col for col in df_final.columns if col not in ORDEM_PADRAO]
-    df_final = df_final[colunas_presentes + colunas_extras]
+    colunas_extras = [
+        col for col in df_final.columns
+        if col not in ORDEM_PADRAO and col != 'arquivo_origem'
+    ]
+    colunas_finais = colunas_presentes + colunas_extras
+    if 'arquivo_origem' in df_final.columns:
+        colunas_finais.append('arquivo_origem')
+    df_final = df_final[colunas_finais]
 
     # --- Nome do arquivo com data e hora (yyyymmddhhmmss) ---
     timestamp = pd.Timestamp.now().strftime('%Y%m%d%H%M%S')

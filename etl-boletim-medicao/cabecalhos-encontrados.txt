@@ -1,0 +1,295 @@
+Total de arquivos: 674
+Cabecalhos distintos encontrados: 14
+Abas sem cabecalho reconhecido: 2
+Erros ao abrir: 0
+
+=== Cabecalho #1 (usado em 535 arquivo(s), ex: 01 - AgrupamentoMedicao_110256-1-06042026-49074(1).xlsx) ===
+  - 'IdentificadorMedicao'  ->  identificadormedicao
+  - 'IdentificadorAgrupamento'  ->  identificadoragrupamento
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Competencia'  ->  competencia
+  - 'TipoMedicao'  ->  tipomedicao
+  - 'Contrato'  ->  contrato
+  - 'Processo'  ->  processo
+  - 'Parceiro'  ->  parceiro
+  - 'Municipio'  ->  municipio
+  - 'DescricaoNotaFiscal'  ->  descricaonotafiscal
+  - 'Boletim'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'TextoBoletim'  ->  textoboletim
+  - 'ColetorCusto'  ->  origem_lancamento
+  - 'CM'  ->  cp
+  - 'IVA'  ->  iva
+  - 'DomicilioFiscal'  ->  domiciliofiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+
+=== Cabecalho #2 (usado em 40 arquivo(s), ex: 1180 - EQTL PA - BM -ELINSA - MED FINAL-JUNHO26_LOTE 02_15.06.2026(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Boletim de Medição'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)'  ->  origem_lancamento
+  - 'CENTRO'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'CONTRATO'  ->  contrato
+  - 'NOTA PROJ'  ->  nota_proj
+  - 'DomicilioFiscal'  ->  domiciliofiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+
+=== Cabecalho #3 (usado em 27 arquivo(s), ex: 0cdfe9c2473ad2e831ff279ecb53a6f3018743a0c3b9e3df3b4fe5781b1 (2)(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Boletim de Medição'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'CONTRATO'  ->  contrato
+  - 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)'  ->  origem_lancamento
+  - 'CP'  ->  cp
+  - 'IVA'  ->  iva
+  - 'DomicilioFiscal'  ->  domiciliofiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+  - 'NF'  ->  nota_fiscal
+
+=== Cabecalho #4 (usado em 22 arquivo(s), ex: 1995 - Cópia de EQTL PA - BM - MED UNICA (002) (003) (002)(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Folha de Registro'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)'  ->  origem_lancamento
+  - 'CM'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'DomicilioFiscal'  ->  domiciliofiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+
+=== Cabecalho #5 (usado em 17 arquivo(s), ex: 01296433e9fd3f01ccab5106dbedcf1b3cb06c749651b04aa3f68a737e2(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Boletim de Medição'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)'  ->  origem_lancamento
+  - 'CM'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'DomicilioFiscal'  ->  domiciliofiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+
+=== Cabecalho #6 (usado em 8 arquivo(s), ex: 3006 - BOLETIM EQTL PA ELINSA(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Folha de Registro'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'CM'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'DomicilioFiscal'  ->  domiciliofiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+
+=== Cabecalho #7 (usado em 6 arquivo(s), ex: 2553 - 38 - BM - EQTL PA  MTBT INVESTIMENTO - ELINSA - ABRIL.2026.xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Boletim de Medição'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'CM'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+
+=== Cabecalho #8 (usado em 4 arquivo(s), ex: 5822 - 87 - BASE FOLHAS ELINSA GERAL MAI - boletins(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Folha de Registro'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)'  ->  origem_lancamento
+  - 'CM'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'DomicilioFiscal'  ->  domiciliofiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+  - 'nan'  ->  (NAO MAPEADO)
+
+=== Cabecalho #9 (usado em 3 arquivo(s), ex: 32 - BOLETIM EQTL PA ELINSA(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Boletim de Medição'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'CP'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+
+=== Cabecalho #10 (usado em 3 arquivo(s), ex: 33 - BM - EQTL PA  PLPT INVESTIMENTO - ELINSA - ABRIL.2026(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Boletim de Medição'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'CM'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'DomicilioFiscal'  ->  domiciliofiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+
+=== Cabecalho #11 (usado em 3 arquivo(s), ex: 35 - EQTL PA - BM - ELINSA - MED UNICA - MAR-ABR_INVEST_V2 (003) (002)(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Boletim de Medição'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'CONTRATO'  ->  contrato
+  - 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)'  ->  origem_lancamento
+  - 'CP'  ->  cp
+  - 'IVA'  ->  iva
+
+=== Cabecalho #12 (usado em 3 arquivo(s), ex: 36 - EQTL PA - BM - ELINSA - MED UNICA - ABR-2026_CUSTEIO (002)(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Boletim de Medição'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'CP'  ->  cp
+  - 'IVA'  ->  iva
+
+=== Cabecalho #13 (usado em 2 arquivo(s), ex: 3182 - BOLETIM EQTL PA ELINSA(1).xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Folha de Registro'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'CM'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'Domicilio Fiscal'  ->  domiciliofiscal
+  - 'Cód.tarifa fiscal'  ->  codigotarifafiscal
+
+=== Cabecalho #14 (usado em 1 arquivo(s), ex: 87 - BASE FOLHAS ELINSA GERAL MAI - boletins.xlsx) ===
+  - 'Distribuidora'  ->  distribuidora
+  - 'Regional'  ->  regional
+  - 'Tipo de Medição\n(Cust/Invest/Ativ)'  ->  tipomedicao
+  - 'Estrutura\n(Prod/Disp)'  ->  estrutura
+  - 'Medição\n(Ciclo/Final/Pend)'  ->  medicao
+  - 'Período de Medição'  ->  competencia
+  - 'Parceiro'  ->  parceiro
+  - 'Município'  ->  municipio
+  - 'Equipe'  ->  equipe
+  - 'Descrição Da Nota Fiscal'  ->  descricaonotafiscal
+  - 'Folha de Registro'  ->  boletim
+  - 'Valor'  ->  valor
+  - 'Data De Envio Do Boletim'  ->  data_envio
+  - 'Origem de Lançamento\n(PEP, Diagr, Ord, CC)'  ->  origem_lancamento
+  - 'CM'  ->  cp
+  - 'IVA'  ->  iva
+  - 'Nº Nota Fiscal'  ->  nota_fiscal
+  - 'DomicilioFiscal'  ->  domiciliofiscal
+  - 'CodigoTarifaFiscal'  ->  codigotarifafiscal
+  - 'nan'  ->  (NAO MAPEADO)
+  - 'nan'  ->  (NAO MAPEADO)
+
+--- Abas sem cabecalho reconhecido ---
+3182 - BOLETIM EQTL PA ELINSA(1).xlsx :: auxiliar
+3182 - BOLETIM EQTL PA ELINSA.xlsx :: auxiliar

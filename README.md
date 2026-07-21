@@ -33,6 +33,9 @@ etl-extracao-xlsx/
 ├── etl-siga-medicao/             # Dados do sistema SIGA, segmentados por mês/ano na saída
 │   ├── load_siga_medicao.py
 │   └── run_siga_medicao.py
+├── etl-unifica-turno-gpm/        # Consolidação de turnos GPM (.xlsx e .csv, sem mapeamento fixo de colunas)
+│   ├── load_unifica_turno_gpm.py
+│   └── run_unifica_turno_gpm.py
 ├── main.py                       # Ponto de entrada mínimo do projeto (placeholder)
 ├── pyproject.toml
 └── uv.lock
@@ -52,6 +55,7 @@ Cada pasta `etl-*` segue o mesmo padrão:
 | `etl-explode-bm-nfse` | Recebe planilhas com uma coluna (ex.: `boletim`) contendo múltiplos valores separados por vírgula/ponto e vírgula/barra/quebra de linha, e "explode" cada valor em uma linha própria. | `.csv` por arquivo de origem (`*_explodido.csv`) |
 | `etl-medicao` | Pipeline mais genérico: localiza o cabeçalho por palavras-chave (nota, ordem, data, equipe, valor, status...), remove linha de total, padroniza colunas numéricas e nomes de coluna via mapeamento, e faz backup dos arquivos de origem compactando-os em `.zip` antes de excluí-los da origem. | `.csv` consolidado com timestamp + `.zip` de backup |
 | `etl-siga-medicao` | Lê planilhas exportadas do sistema SIGA, localiza cabeçalho pela presença de "ordem de serviço"/"status da atividade", normaliza colunas e **segmenta a saída por mês/ano** (`Mes_Ano`, extraído da coluna `data`). Também compacta os arquivos de origem em `.zip` antes de excluí-los. | um `.csv` por mês/ano + `.zip` de backup |
+| `etl-unifica-turno-gpm` | Lê arquivos de turnos GPM em **`.xlsx` e `.csv`** (inclusive em subpastas; apenas a primeira aba visível de cada `.xlsx`), aplica um dicionário de mapeamento (de-para) fixo de colunas e reordena conforme `ORDEM_PADRAO` — mesmo padrão dos demais pipelines. Colunas fora do de-para são anexadas ao final em ordem alfabética. Move os arquivos de origem processados para uma pasta de histórico (com prefixo aleatório em caso de nome duplicado). | `.csv` consolidado com timestamp |
 
 Todos os pipelines:
 
@@ -90,7 +94,7 @@ Exemplo — consolidar medições do SIGA (gera um CSV por mês/ano):
 uv run etl-siga-medicao/run_siga_medicao.py
 ```
 
-O padrão se repete para os demais pipelines (`etl-disponibilidade_medicao`, `etl-explode-bm-nfse`, `etl-medicao`), sempre executando o `run_*.py` correspondente.
+O padrão se repete para os demais pipelines (`etl-disponibilidade_medicao`, `etl-explode-bm-nfse`, `etl-medicao`, `etl-unifica-turno-gpm`), sempre executando o `run_*.py` correspondente.
 
 ## Licença
 
