@@ -1,5 +1,9 @@
+import calendar
 import logging
+import re
 import shutil
+import unicodedata
+from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Tuple
 
@@ -17,39 +21,45 @@ logger = logging.getLogger(__name__)
 MAPEAMENTO = {
     'distribuidora': 'distribuidora',
     'regional': 'regional',
-    'tipodemedição(cust/invest/ativ)': 'tipo_medicao',
+    'tipodemedicao_cust_invest_ativ': 'tipo_medicao',
+    'tipo_de_medicao_cust_invest_ativ': 'tipo_medicao',
     'tipomedicao': 'tipo_medicao',
-    'estrutura(prod/disp)': 'estrutura',
-    'medição(ciclo/final/pend)': 'medicao',
-    'períododemedição': 'periodo_medicao',
+    'estrutura_prod_disp': 'estrutura',
+    'medicao_ciclo_final_pend': 'medicao',
+    'periododemedicao': 'periodo_medicao',
+    'periodo_de_medicao': 'periodo_medicao',
     'competencia': 'periodo_medicao',
+    'competencia_servico': 'periodo_medicao',
     'parceiro': 'parceiro',
-    'município': 'municipio',
     'municipio': 'municipio',
     'equipe': 'equipe',
-    'descriçãodanotafiscal': 'desc_nota_fiscal',
+    'descricaodanotafiscal': 'desc_nota_fiscal',
+    'descricao_da_nota_fiscal': 'desc_nota_fiscal',
     'descricaonotafiscal': 'desc_nota_fiscal',
     'folhaderegistro': 'boletim',
     'boletim': 'boletim',
-    'boletimdemedição': 'boletim',
+    'boletimdemedicao': 'boletim',
+    'boletim_de_medicao': 'boletim',
     'valor': 'valor_bm',
     'datadeenviodoboletim': 'data_envio_bm',
+    'data_de_envio_do_boletim': 'data_envio_bm',
     'cm': 'cp',
     'centro': 'cp',
     'cp': 'cp',
     'iva': 'iva',
-    'nºnotafiscal': 'nota_fiscal',
+    'nonotafiscal': 'nota_fiscal',
     'nf': 'nota_fiscal',
     'domiciliofiscal': 'domicilio_fiscal',
     'codigotarifafiscal': 'codigo_tarifa_fiscal',
-    'cód.tarifafiscal': 'codigo_tarifa_fiscal',
+    'cod_tarifafiscal': 'codigo_tarifa_fiscal',
     'identificadormedicao': 'identificador_medicao',
     'identificadoragrupamento': 'identificador_agrupamento',
     'contrato': 'contrato',
     'processo': 'processo',
     'textoboletim': 'texto_boletim',
     'coletorcusto': 'origem_lancamento',
-    'origemdelançamento(pep,diagr,ord,cc)': 'origem_lancamento',
+    'origemdelancamento_pep_diagr_ord_cc': 'origem_lancamento',
+    'origem_de_lancamento_pep_diagr_ord_cc': 'origem_lancamento',
     'notaproj': 'nota_prol',
 }
 
@@ -91,6 +101,42 @@ ORDEM_PADRAO = [
 # FUNÇÕES AUXILIARES
 # ------------------------------------------------------------------
 
+def _normalizar_cabecalho(texto) -> str:
+    texto = str(texto).strip().lower()
+    texto = unicodedata.normalize('NFKD', texto).encode('ascii', 'ignore').decode('ascii')
+    texto = re.sub(r'[^a-z0-9]+', '_', texto)
+    return texto.strip('_')
+
+
+MESES_PT = {
+    'janeiro': 1, 'fevereiro': 2, 'março': 3, 'marco': 3, 'abril': 4,
+    'maio': 5, 'junho': 6, 'julho': 7, 'agosto': 8, 'setembro': 9,
+    'outubro': 10, 'novembro': 11, 'dezembro': 12,
+}
+
+_RE_INTERVALO_PERIODO = re.compile(r'^(\d{2}\.\d{2}\.\d{4})\s*\S*\s*(\d{2}\.\d{2}\.\d{4})$')
+
+
+def _normalizar_periodo_medicao(valor, hoje: Optional[datetime] = None):
+    if not isinstance(valor, str) or not valor.strip():
+        return valor
+    texto = valor.strip()
+
+    m = _RE_INTERVALO_PERIODO.match(texto)
+    if m:
+        return f"{m.group(1)} a {m.group(2)}"
+
+    mes_num = MESES_PT.get(texto.lower())
+    if mes_num:
+        hoje = hoje or datetime.now()
+        ano = hoje.year if mes_num <= hoje.month else hoje.year - 1
+        ultimo_dia = calendar.monthrange(ano, mes_num)[1]
+        return f"01.{mes_num:02d}.{ano} a {ultimo_dia:02d}.{mes_num:02d}.{ano}"
+
+    logger.warning(f"periodo_medicao em formato não reconhecido: {texto!r} — mantido sem alteração.")
+    return texto
+
+
 def _localizar_linha_cabecalho(df_bruto: pd.DataFrame) -> int:
     for i, row in df_bruto.iterrows():
         linha_texto = ' '.join(row.fillna('').astype(str)).lower()
@@ -123,9 +169,7 @@ def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
         return None
 
     df_tabela = df_bruto.iloc[linha_cabecalho:].copy()
-    df_tabela.columns = (
-        df_tabela.iloc[0].astype(str).str.lower().str.replace(r'\s+', '', regex=True)
-    )
+    df_tabela.columns = df_tabela.iloc[0].map(_normalizar_cabecalho)
     df_tabela = df_tabela.iloc[1:].copy()
 
     df_tabela.dropna(axis=1, how='all', inplace=True)
@@ -138,6 +182,9 @@ def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
 
     df_tabela.rename(columns=MAPEAMENTO, inplace=True)
     df_tabela.drop(columns=COLUNAS_REMOVIDAS, errors='ignore', inplace=True)
+
+    if 'periodo_medicao' in df_tabela.columns:
+        df_tabela['periodo_medicao'] = df_tabela['periodo_medicao'].apply(_normalizar_periodo_medicao)
 
     df_tabela = _remover_linha_somatorio(df_tabela)
 
@@ -254,16 +301,15 @@ def processar_boletins(
     logger.info("\nConcatenando dados...")
     df_final = pd.concat(todos_dfs, ignore_index=True)
 
-    # --- Ordenação final: colunas padrão, depois extras, arquivo_origem sempre por último ---
-    colunas_presentes = [col for col in ORDEM_PADRAO if col in df_final.columns]
+    # --- Ordenação final: todas as colunas padrão (mesmo ausentes no lote), depois extras, arquivo_origem sempre por último ---
     colunas_extras = [
         col for col in df_final.columns
         if col not in ORDEM_PADRAO and col != 'arquivo_origem'
     ]
-    colunas_finais = colunas_presentes + colunas_extras
+    colunas_finais = ORDEM_PADRAO + colunas_extras
     if 'arquivo_origem' in df_final.columns:
         colunas_finais.append('arquivo_origem')
-    df_final = df_final[colunas_finais]
+    df_final = df_final.reindex(columns=colunas_finais)
 
     # --- Nome do arquivo com data e hora (yyyymmddhhmmss) ---
     timestamp = pd.Timestamp.now().strftime('%Y%m%d%H%M%S')
