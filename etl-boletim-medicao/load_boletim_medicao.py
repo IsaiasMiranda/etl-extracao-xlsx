@@ -32,6 +32,7 @@ MAPEAMENTO = {
     'competencia_servico': 'periodo_medicao',
     'parceiro': 'parceiro',
     'municipio': 'municipio',
+    'municipiodolocaldaprestacaodeservico': 'municipio',
     'equipe': 'equipe',
     'descricaodanotafiscal': 'desc_nota_fiscal',
     'descricao_da_nota_fiscal': 'desc_nota_fiscal',
