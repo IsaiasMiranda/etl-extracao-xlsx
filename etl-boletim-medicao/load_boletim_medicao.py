@@ -68,6 +68,25 @@ MAPEAMENTO = {
 COLUNAS_REMOVIDAS = ['nota_fiscal', 'nota_prol']
 
 # ------------------------------------------------------------------
+# MAPEAMENTO HEURÍSTICO (fallback por combinação de palavras-chave,
+# para cabeçalhos com variações de escrita não previstas no MAPEAMENTO
+# exato acima — ex.: "Folha de Registro", "Registro/Folha" etc.)
+# ------------------------------------------------------------------
+MAPEAMENTO_HEURISTICO = [
+    (('folha', 'registro'), 'boletim'),
+    (('pep', 'ordem'), 'origem_lancamento'),
+]
+
+
+def _mapear_por_heuristica(coluna: str) -> str:
+    coluna = str(coluna)
+    for palavras_chave, destino in MAPEAMENTO_HEURISTICO:
+        if all(palavra in coluna for palavra in palavras_chave):
+            return destino
+    return coluna
+
+
+# ------------------------------------------------------------------
 # ORDEM FINAL DAS COLUNAS (a coluna "centro" não está nesta lista
 # e será adicionada automaticamente no final)
 # ------------------------------------------------------------------
@@ -182,6 +201,8 @@ def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
     df_tabela = df_tabela.loc[:, ~df_tabela.columns.duplicated()]
 
     df_tabela.rename(columns=MAPEAMENTO, inplace=True)
+    df_tabela.rename(columns=_mapear_por_heuristica, inplace=True)
+    df_tabela = df_tabela.loc[:, ~df_tabela.columns.duplicated()]
     df_tabela.drop(columns=COLUNAS_REMOVIDAS, errors='ignore', inplace=True)
 
     if 'periodo_medicao' in df_tabela.columns:
