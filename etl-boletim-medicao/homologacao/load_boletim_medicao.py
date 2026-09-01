@@ -2,6 +2,7 @@ import calendar
 import logging
 import re
 import shutil
+import unicodedata
 from datetime import date
 from pathlib import Path
 from typing import List, Optional, Tuple
@@ -18,6 +19,14 @@ logger = logging.getLogger(__name__)
 # ------------------------------------------------------------------
 # NORMALIZAÇÃO DO PERÍODO DE MEDIÇÃO (COMPETÊNCIA)
 # Padrão de saída: dd.mm.yyyy a dd.mm.yyyy
+#
+# Versão MAIS COMPLETA que a de produção (deliberadamente NÃO trocada
+# pela réplica exata de produção, 2026-09-01): produção só reconhece
+# intervalo de data completo ou mês por extenso isolado. Esta versão
+# (evoluída dentro da própria homologação) também reconhece "mm/yyyy" e
+# intervalo por extenso com dia (ex. "01 de Janeiro a 31 de Janeiro de
+# 2026") -- capacidade real já usada nesta homologação, replicar a
+# versão mais simples de produção aqui seria regressão, não réplica.
 # ------------------------------------------------------------------
 _REGEX_PERIODO_MEDICAO = re.compile(
     r'(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})\s*(?:a|à|-|até)\s*'
@@ -156,52 +165,87 @@ def _normalizar_periodo_medicao(valor):
 
 # ------------------------------------------------------------------
 # MAPEAMENTO COMPLETO (todas as variações → padrão)
+# REPLICADO DE PRODUÇÃO (2026-09-01) -- chaves já normalizadas por
+# _normalizar_cabecalho (sem acento/pontuação), não mais o
+# .lower().replace(espaço) mais simples que a homologação usava.
 # ------------------------------------------------------------------
 MAPEAMENTO = {
     'distribuidora': 'distribuidora',
     'regional': 'regional',
-    'tipodemedição(cust/invest/ativ)': 'tipo_medicao',
+    'tipodemedicao_cust_invest_ativ': 'tipo_medicao',
+    'tipo_de_medicao_cust_invest_ativ': 'tipo_medicao',
     'tipomedicao': 'tipo_medicao',
-    'estrutura(prod/disp)': 'estrutura',
-    'medição(ciclo/final/pend)': 'medicao',
-    'períododemedição': 'periodo_medicao',
+    'estrutura_prod_disp': 'estrutura',
+    'medicao_ciclo_final_pend': 'medicao',
+    'periododemedicao': 'periodo_medicao',
+    'periodo_de_medicao': 'periodo_medicao',
     'competencia': 'periodo_medicao',
-    'periodo_servico': 'periodo_medicao',
+    'competencia_servico': 'periodo_medicao',
     'parceiro': 'parceiro',
-    'município': 'municipio',
     'municipio': 'municipio',
     'municipiodolocaldaprestacaodeservico': 'municipio',
     'equipe': 'equipe',
-    'descriçãodanotafiscal': 'desc_nota_fiscal',
+    'descricaodanotafiscal': 'desc_nota_fiscal',
+    'descricao_da_nota_fiscal': 'desc_nota_fiscal',
     'descricaonotafiscal': 'desc_nota_fiscal',
-    'desc_nf': 'desc_nota_fiscal',
     'folhaderegistro': 'boletim',
+    # 'folhregsrv' existia no MAPEAMENTO antigo da homologacao e foi
+    # perdido na reorganizacao de producao -- achado real ao replicar o
+    # cenario de producao aqui (2026-09-01): 2 dos 6 arquivos que
+    # regrediram usam EXCLUSIVAMENTE esse cabecalho abreviado pra
+    # boletim, e o fallback heuristico ('folha'+'registro') nao cobre a
+    # forma abreviada ('folh'+'regsrv'). Mesmo gap existe hoje em
+    # producao/load_boletim_medicao.py (nao tocado por pedido explicito
+    # do usuario) -- sinalizado a parte, nao corrigido la.
     'folhregsrv': 'boletim',
     'boletim': 'boletim',
-    'boletimdemedição': 'boletim',
+    'boletimdemedicao': 'boletim',
+    'boletim_de_medicao': 'boletim',
     'valor': 'valor_bm',
     'datadeenviodoboletim': 'data_envio_bm',
+    'data_de_envio_do_boletim': 'data_envio_bm',
     'cm': 'cp',
     'centro': 'cp',
     'cp': 'cp',
     'iva': 'iva',
-    'nºnotafiscal': 'nota_fiscal',
+    'nonotafiscal': 'nota_fiscal',
     'nf': 'nota_fiscal',
     'domiciliofiscal': 'domicilio_fiscal',
     'codigotarifafiscal': 'codigo_tarifa_fiscal',
-    'cód.tarifafiscal': 'codigo_tarifa_fiscal',
+    'cod_tarifafiscal': 'codigo_tarifa_fiscal',
     'identificadormedicao': 'identificador_medicao',
     'identificadoragrupamento': 'identificador_agrupamento',
     'contrato': 'contrato',
     'processo': 'processo',
     'textoboletim': 'texto_boletim',
     'coletorcusto': 'origem_lancamento',
-    'origemdelançamento(pep,diagr,ord,cc)': 'origem_lancamento',
+    'origemdelancamento_pep_diagr_ord_cc': 'origem_lancamento',
+    'origem_de_lancamento_pep_diagr_ord_cc': 'origem_lancamento',
     'notaproj': 'nota_prol',
 }
 
 # Colunas removidas do modelo final (não fazem mais parte do consolidado)
 COLUNAS_REMOVIDAS = ['nota_fiscal', 'nota_prol']
+
+# ------------------------------------------------------------------
+# MAPEAMENTO HEURÍSTICO (fallback por combinação de palavras-chave,
+# para cabeçalhos com variações de escrita não previstas no MAPEAMENTO
+# exato acima — ex.: "Folha de Registro", "Registro/Folha" etc.)
+# REPLICADO DE PRODUÇÃO (2026-09-01).
+# ------------------------------------------------------------------
+MAPEAMENTO_HEURISTICO = [
+    (('folha', 'registro'), 'boletim'),
+    (('pep', 'ordem'), 'origem_lancamento'),
+]
+
+
+def _mapear_por_heuristica(coluna: str) -> str:
+    coluna = str(coluna)
+    for palavras_chave, destino in MAPEAMENTO_HEURISTICO:
+        if all(palavra in coluna for palavra in palavras_chave):
+            return destino
+    return coluna
+
 
 # ------------------------------------------------------------------
 # ORDEM FINAL DAS COLUNAS (a coluna "centro" não está nesta lista
@@ -238,6 +282,13 @@ ORDEM_PADRAO = [
 # FUNÇÕES AUXILIARES
 # ------------------------------------------------------------------
 
+def _normalizar_cabecalho(texto) -> str:
+    texto = str(texto).strip().lower()
+    texto = unicodedata.normalize('NFKD', texto).encode('ascii', 'ignore').decode('ascii')
+    texto = re.sub(r'[^a-z0-9]+', '_', texto)
+    return texto.strip('_')
+
+
 def _localizar_linha_cabecalho(df_bruto: pd.DataFrame) -> int:
     for i, row in df_bruto.iterrows():
         linha_texto = ' '.join(row.fillna('').astype(str)).lower()
@@ -270,9 +321,7 @@ def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
         return None
 
     df_tabela = df_bruto.iloc[linha_cabecalho:].copy()
-    df_tabela.columns = (
-        df_tabela.iloc[0].astype(str).str.lower().str.replace(r'\s+', '', regex=True)
-    )
+    df_tabela.columns = df_tabela.iloc[0].map(_normalizar_cabecalho)
     df_tabela = df_tabela.iloc[1:].copy()
 
     df_tabela.dropna(axis=1, how='all', inplace=True)
@@ -284,6 +333,8 @@ def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
     df_tabela = df_tabela.loc[:, ~df_tabela.columns.duplicated()]
 
     df_tabela.rename(columns=MAPEAMENTO, inplace=True)
+    df_tabela.rename(columns=_mapear_por_heuristica, inplace=True)
+    df_tabela = df_tabela.loc[:, ~df_tabela.columns.duplicated()]
     df_tabela.drop(columns=COLUNAS_REMOVIDAS, errors='ignore', inplace=True)
 
     if 'periodo_medicao' in df_tabela.columns:
@@ -409,17 +460,21 @@ def processar_boletins(
     logger.info("\nConcatenando dados...")
     df_final = pd.concat(todos_dfs, ignore_index=True)
 
-    # --- Ordenação por ORDEM_PADRAO ANTES de qualquer normalização: fixa a
-    # ordem de referência das colunas (criando as ausentes vazias, arquivo_origem
-    # sempre por último) para que toda etapa seguinte -- inclusive a correção
-    # auditável de valores deslocados -- opere sobre um layout já canônico. ---
-    for col in ORDEM_PADRAO:
-        if col not in df_final.columns:
-            df_final[col] = pd.NA
-    colunas_finais = list(ORDEM_PADRAO)
+    # --- Ordenação final: todas as colunas padrão (mesmo ausentes no
+    # lote), depois extras, arquivo_origem sempre por último ---
+    # REPLICADO DE PRODUÇÃO (2026-09-01): antes, a homologação restringia
+    # o consolidado só a ORDEM_PADRAO, descartando qualquer coluna extra
+    # não mapeada -- achado real desta mesma sessão de homologação
+    # (Coluna1/uf/id_ibge sendo silenciosamente perdidos). Produção já
+    # preserva as extras via reindex; réplica exata adota o mesmo aqui.
+    colunas_extras = [
+        col for col in df_final.columns
+        if col not in ORDEM_PADRAO and col != 'arquivo_origem'
+    ]
+    colunas_finais = ORDEM_PADRAO + colunas_extras
     if 'arquivo_origem' in df_final.columns:
         colunas_finais.append('arquivo_origem')
-    df_final = df_final[colunas_finais]
+    df_final = df_final.reindex(columns=colunas_finais)
 
     if normalizar_deslocamentos:
         from normalizar_boletim import normalizar_dataframe
