@@ -142,3 +142,46 @@ tinham sido atualizados junto com a mudança de regra de negócio. Corrigidos
 puro_vira_nulo`, ambos agora esperam `pd.isna(...)` pro caso SAP puro).
 `uv run --with pytest pytest etl-boletim-medicao/homologacao -q` → 24/24
 PASS. Sem mudança de regra de negócio, só de expectativa de teste.
+
+### 2026-09-02 (continuação) — Promoção de `homologacao/` para `producao/`
+Usuário confirmou "homologação testado e dentro das normas estabelecidas" e
+pediu o caminho para produção — sessão inteira de auditoria (repo `elinsa`)
+comparou `elinsa_produ` × `elinsa_homologacao` boletim a boletim antes de
+decidir promover (ver CLAUDE.md do repo `elinsa`, seção 8, para os números).
+Plano mostrado e aprovado via plan mode antes de executar.
+
+- **`producao/load_boletim_medicao.py`**: substituído por completo pela
+  versão de `homologacao/` (schema de saída já é idêntico desde `12db8da`,
+  2026-09-01 — só a lógica de limpeza mudou). Corrige `folhregsrv` ausente
+  do `MAPEAMENTO` (gap que existia em `producao/` desde a reorganização de
+  2026-09-01, documentado como "não corrigido lá por pedido do usuário" —
+  agora corrigido, deixa de ser um gap exclusivo de homologação). 2
+  comentários de cabeçalho que comparavam esta versão contra uma "produção"
+  mais simples (agora inexistente, já que este arquivo passou a SER
+  produção) foram reescritos para não confundir leitura futura — nenhuma
+  mudança de lógica.
+- **`producao/normalizar_boletim.py`** (novo): cópia de
+  `homologacao/normalizar_boletim.py`, sem alteração — mesma decisão de
+  duplicação deliberada já tomada pra `load_boletim_medicao.py` em
+  `16954aa` (cada módulo evolui independente, sem risco de conflito de
+  merge entre uma mudança futura em homologação e o código já promovido).
+- **`producao/run_boletim_medicao.py`**: `processar_boletins(...)` ganhou
+  as 5 flags de limpeza que `homologacao/run_boletim_medicao_homologacao.py`
+  já usava (`normalizar_deslocamentos`, `caminho_auditoria`,
+  `remover_sem_boletim`, `excluir_boletim_nfse_duplicado`,
+  `remover_boletim_sem_valor_duplicado`), apontando pras pastas REAIS de
+  produção (`D:\base-geral\base-boletim-medicao\...`, sem renomear nada) —
+  `homologacao/` continua intocado e continua existindo como ambiente
+  separado para validar mudanças futuras antes de promover de novo.
+- Validado: `uv run --with pytest pytest etl-boletim-medicao -q` → 24/24
+  PASS (lógica de `normalizar_boletim.py` não mudou, só a integração em
+  `producao/`); smoke test confirmou que `producao/load_boletim_medicao.py`
+  importa `normalizar_boletim` corretamente da própria pasta (mesmo
+  mecanismo de resolução de import já usado em `homologacao/`).
+- **Pendência explícita**: este commit só troca o CÓDIGO — não roda o
+  pipeline contra os arquivos reais de produção nem toca em nenhum banco.
+  O corte real de dados (rodar `producao/run_boletim_medicao.py` de
+  verdade + Hop + `dbt --full-refresh` em `elinsa_produ`) é uma decisão
+  separada, documentada como Fase 2 no plano da sessão, condicionada a um
+  relatório de impacto (Fase 1, feito no repo `elinsa`) — não faz parte
+  deste commit.
