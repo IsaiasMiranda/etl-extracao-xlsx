@@ -53,11 +53,14 @@ def test_data_envio_bm_sentinela_1900_vira_nulo():
     assert pd.isna(normalizado.loc[1, 'data_envio_bm'])
 
 
-def test_origem_lancamento_aceita_pep_e_numero_sap_remove_sufixo_excel():
-    # Achado real na homologação de 2026-09-01: 2 formatos válidos
-    # (código PEP "PA-.../AP-..." e número SAP puro de 7-10 dígitos) e
-    # 5.881 linhas com sufixo ".0" de float do Excel nunca removido
-    # (mesma limpeza já aplicada a boletim/contrato).
+def test_origem_lancamento_aceita_so_pep_numero_sap_puro_vira_nulo():
+    # Achado real na homologação de 2026-09-01: só o código PEP
+    # ("PA-.../AP-...") é formato válido; um número SAP puro (segundo
+    # formato antes aceito, 46% dos valores preenchidos no corpus
+    # histórico) foi restringido no mesmo dia (e7cdb73) e passou a virar
+    # nulo, não mais um valor aceito -- negócio só reconhece o código PEP.
+    # A limpeza de sufixo ".0" de float do Excel (5.881 linhas) continua
+    # valendo para o formato PEP, mesma lógica já aplicada a boletim/contrato.
     original = pd.DataFrame([
         {'origem_lancamento': 'PA-2652502SMC1.1.0125.D'},
         {'origem_lancamento': 'AP-2402304EME1.F.0056.D'},
@@ -68,7 +71,7 @@ def test_origem_lancamento_aceita_pep_e_numero_sap_remove_sufixo_excel():
 
     assert normalizado.loc[0, 'origem_lancamento'] == 'PA-2652502SMC1.1.0125.D'
     assert normalizado.loc[1, 'origem_lancamento'] == 'AP-2402304EME1.F.0056.D'
-    assert normalizado.loc[2, 'origem_lancamento'] == '6001429759'
+    assert pd.isna(normalizado.loc[2, 'origem_lancamento'])
 
 
 def test_origem_lancamento_fora_do_padrao_vira_nulo():
@@ -283,18 +286,22 @@ def test_valor_pequeno_nao_e_roubado_para_boletim():
 
 
 def test_origem_lancamento_nao_e_roubado_para_boletim():
-    # Achado real na homologação em escala de 2026-08-31: código de
-    # coletor de custo/PEP em origem_lancamento também é um número SAP
-    # puro de 10 dígitos (mesmo tamanho de um boletim real) -- 9.791
-    # linhas indevidamente copiadas pra boletim, apagando o código
-    # original. Ficam excluídos como candidato só nessa direção
-    # específica (origem_lancamento -> boletim).
+    # Achado real na homologação em escala de 2026-08-31: número SAP puro
+    # de 10 dígitos em origem_lancamento (mesmo tamanho de um boletim
+    # real) -- 9.791 linhas indevidamente copiadas pra boletim, apagando
+    # o código original. Fica excluído como candidato só nessa direção
+    # específica (origem_lancamento -> boletim); a proteção vale
+    # independente do valor sobreviver ou não em origem_lancamento.
+    # Desde a restrição de 2026-09-01 (e7cdb73), número SAP puro deixou
+    # de ser formato válido de origem_lancamento (só PEP sobrevive) e
+    # também vira nulo na validação final desse campo -- comportamento
+    # correto e separado do que este teste cobre (furto para boletim).
     original = pd.DataFrame([{'boletim': None, 'origem_lancamento': '6020018020'}])
 
     normalizado, auditoria = normalizar_dataframe(original)
 
     assert pd.isna(normalizado.loc[0, 'boletim'])
-    assert normalizado.loc[0, 'origem_lancamento'] == '6020018020'
+    assert pd.isna(normalizado.loc[0, 'origem_lancamento'])
     assert 'coluna_destino' not in auditoria.columns or not (
         (auditoria['tipo'] == 'CORRIGIDA')
         & (auditoria['coluna_destino'] == 'boletim')

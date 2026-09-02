@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-Este arquivo fornece orientações ao Claude Code (claude.ai/code) para trabalhar com o código deste repositório.
+Este arquivo fornece orientações ao Codex (Codex.ai/code) para trabalhar com o código deste repositório.
 
 ## Visão geral do projeto
 
