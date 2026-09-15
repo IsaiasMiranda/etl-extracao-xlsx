@@ -642,6 +642,7 @@ if __name__ == "__main__":
         format='%(asctime)s [%(levelname)s] %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
-    ORIGEM = Path(r'D:\One-Drive\Amper Elinsa\Fabiano Braz da Silva - Boletins de Medição\PARÁ')
-    DESTINO = ORIGEM / 'base-consolidado'
-    processar_boletins(ORIGEM, DESTINO)
+    ORIGEM = Path(r'D:\base-geral\homologacao\boletim-medicao\source')
+    DESTINO = ORIGEM.parent / 'base-consolidado'
+    PROCESSADOS = ORIGEM.parent / 'arquivos-processados'
+    processar_boletins(ORIGEM, DESTINO, pasta_processados=PROCESSADOS)

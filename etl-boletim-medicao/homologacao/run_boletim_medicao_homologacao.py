@@ -17,7 +17,7 @@ if __name__ == '__main__':
     raiz = Path(r'D:\base-geral\homologacao\boletim-medicao')
     processar_boletins(
         pasta_origem=raiz / 'source',
-        pasta_destino=raiz / 'base-normalizada',
+        pasta_destino=raiz / 'base-consolidado',
         pasta_processados=raiz / 'arquivos-processados',
         normalizar_deslocamentos=True,
         caminho_auditoria=raiz / 'auditoria' / 'boletim-medicao-normalizacao.csv',
