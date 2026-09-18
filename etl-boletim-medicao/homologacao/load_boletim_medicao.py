@@ -221,7 +221,17 @@ MAPEAMENTO = {
     'coletorcusto': 'origem_lancamento',
     'origemdelancamento_pep_diagr_ord_cc': 'origem_lancamento',
     'origem_de_lancamento_pep_diagr_ord_cc': 'origem_lancamento',
+    # Cabecalho "PEP" isolado -- o MAPEAMENTO_HEURISTICO ('pep','ordem') nao
+    # pegava porque exige as duas palavras. Confirmado com o usuario em
+    # 2026-09-18: PEP e' a mesma informacao de origem_lancamento e os dois
+    # nunca vem preenchidos na mesma linha (medido: 1.117 so origem_lancamento,
+    # 49 so pep, 0 ambos). Se um arquivo trouxer as duas colunas, o
+    # ~duplicated() aplicado logo apos o rename mantem a primeira.
+    'pep': 'origem_lancamento',
     'notaproj': 'nota_prol',
+    # Variante com underscore ("Nota/Proj" -> nota_proj), que escapava do
+    # 'notaproj' acima e vazava para o consolidado como coluna extra.
+    'nota_proj': 'nota_prol',
 }
 
 # Colunas removidas do modelo final (não fazem mais parte do consolidado)
@@ -237,6 +247,61 @@ MAPEAMENTO_HEURISTICO = [
     (('folha', 'registro'), 'boletim'),
     (('pep', 'ordem'), 'origem_lancamento'),
 ]
+
+
+def _consolidar_colunas_duplicadas(df):
+    """Funde colunas que caíram no MESMO nome de destino após o rename.
+
+    Antes isto era um `~df.columns.duplicated()`, que mantinha cegamente a
+    PRIMEIRA e descartava as demais. Achado em 2026-09-18: um boletim trazia
+    "Origem de Lançamento (PEP, Diagr...)" (vazia) na coluna 14 e "PEP"
+    (preenchida) na coluna 22 — ambas mapeiam para `origem_lancamento` —, e o
+    descarte cego perdia 49 linhas de origem_lancamento. Agora o valor final é
+    o primeiro NÃO-VAZIO da esquerda para a direita, então a ordem das colunas
+    na planilha continua sendo o critério de precedência, mas uma coluna vazia
+    deixa de anular uma preenchida.
+    """
+    if not df.columns.duplicated().any():
+        return df
+    # Import local (mesmo padrão do `normalizar_dataframe` mais abaixo):
+    # reusa o regex oficial de PEP em vez de duplicar o formato aqui.
+    from normalizar_boletim import _REGEX_ORIGEM_LANCAMENTO_VALIDO
+
+    def _vazio(v):
+        if isinstance(v, str):
+            return not v.strip()
+        return pd.isna(v)
+
+    def _e_pep(v):
+        return isinstance(v, str) and bool(
+            _REGEX_ORIGEM_LANCAMENTO_VALIDO.fullmatch(v.strip())
+        )
+
+    for nome in df.columns[df.columns.duplicated()].unique():
+        bloco = df.loc[:, df.columns == nome].to_numpy(dtype=object)
+
+        def _escolher(linha, nome=nome):
+            cands = [v for v in linha if not _vazio(v)]
+            if nome == 'origem_lancamento':
+                # Caso real (2026-09-18, arquivo 746218147a...): col. 14
+                # "Origem de Lançamento (PEP, Diagr...)" trazia o coletor
+                # de custo SAP (int 6020050011) e a col. 22 "PEP" trazia o
+                # código PEP de verdade. Escolher "a primeira não-vazia"
+                # pegava o int, que `_validar_origem_lancamento_final`
+                # depois anulava por não ser formato PEP -- e o valor bom
+                # já tinha sido jogado fora. Por isso, para esta coluna, o
+                # candidato no formato PEP vence a ordem das colunas.
+                for v in cands:
+                    if _e_pep(v):
+                        return v
+            return cands[0] if cands else pd.NA
+
+        fundida = pd.Series(
+            [_escolher(linha) for linha in bloco], index=df.index
+        )
+        df = df.loc[:, df.columns != nome]
+        df[nome] = fundida
+    return df
 
 
 def _mapear_por_heuristica(coluna: str) -> str:
@@ -334,7 +399,7 @@ def _processar_aba(sheet, nome_arquivo: str) -> Optional[pd.DataFrame]:
 
     df_tabela.rename(columns=MAPEAMENTO, inplace=True)
     df_tabela.rename(columns=_mapear_por_heuristica, inplace=True)
-    df_tabela = df_tabela.loc[:, ~df_tabela.columns.duplicated()]
+    df_tabela = _consolidar_colunas_duplicadas(df_tabela)
     df_tabela.drop(columns=COLUNAS_REMOVIDAS, errors='ignore', inplace=True)
 
     if 'periodo_medicao' in df_tabela.columns:
