@@ -1,0 +1,22 @@
+# CI dos pipelines de planilha (E1 da proposta de evolução, 2026-09-19):
+# roda a suíte de etl-boletim-medicao/ a cada PR/push. Sem acesso a dados reais.
+name: pytest
+
+on:
+  pull_request:
+  push:
+    branches: [main, "feature/**"]
+  workflow_dispatch:
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Instalar dependências
+        run: uv sync --group dev
+      - name: pytest
+        run: uv run pytest -q
+      - name: Sintaxe de todos os pipelines
+        run: uv run python -m compileall -q etl-boletim-medicao etl-dedup-xlsx etl-disponibilidade_medicao etl-explode-bm-nfse etl-medicao etl-siga-medicao etl-unifica-turno-gpm
