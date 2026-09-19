@@ -1,4 +1,4 @@
-"""Ponto de entrada unico do ETL de boletim de medicao (producao e homologacao).
+r"""Ponto de entrada unico do ETL de boletim de medicao (producao e homologacao).
 
 Uso:
     uv run etl-boletim-medicao/run_boletim_medicao.py --ambiente homologacao
