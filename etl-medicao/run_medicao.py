@@ -2,6 +2,10 @@ import os
 import time
 import traceback
 from pathlib import Path
+import os
+
+# Raiz dos dados (B4, 2026-09-19): variavel de ambiente BASE_GERAL ou padrao local.
+BASE_GERAL = Path(os.environ.get('BASE_GERAL', 'D:/base-geral'))
 from load_medicao import processar_boletins
 
 def main():
@@ -12,11 +16,11 @@ def main():
     print("="*60)
 
     # 1. Caminhos Base (Ajustados para o novo projeto 'medicao')
-    base_dir = Path(r'D:\base-geral\base-medicao\source')
+    base_dir = BASE_GERAL / 'base-medicao/source'
     
     pasta_origem  = base_dir
-    pasta_destino = Path(r'D:\base-geral\base-medicao\base-consolidada')
-    pasta_processada  = Path(r'D:\base-geral\base-medicao\arquivo-processado')
+    pasta_destino = BASE_GERAL / 'base-medicao/base-consolidada'
+    pasta_processada  = BASE_GERAL / 'base-medicao/arquivo-processado'
 
     # 2. Validação básica de diretórios
     if not pasta_origem.exists():
