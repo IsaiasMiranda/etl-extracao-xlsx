@@ -19,8 +19,9 @@ Cada processo de negócio tem seu próprio layout de planilha e suas próprias r
 ```
 etl-extracao-xlsx/
 ├── etl-boletim-medicao/          # Boletins de medição (múltiplas abas por arquivo)
-│   ├── load_boletim_medicao.py   # Regras de extração/limpeza/consolidação
-│   └── run_boletim_medicao.py    # Ponto de entrada (define pastas de origem/destino)
+│   ├── load_boletim_medicao.py   # Extração/consolidação
+│   ├── normalizar_boletim.py     # Regras de limpeza (com test_normalizar_boletim.py)
+│   └── run_boletim_medicao.py    # Ponto de entrada: --ambiente producao|homologacao
 ├── etl-disponibilidade_medicao/  # Medição de disponibilidade (planilha "larga", 1 coluna por dia)
 │   ├── load_disponibilidade_medicao.py
 │   └── run_disponibilidade_medicao.py
@@ -36,7 +37,6 @@ etl-extracao-xlsx/
 ├── etl-unifica-turno-gpm/        # Consolidação de turnos GPM (.xlsx e .csv, sem mapeamento fixo de colunas)
 │   ├── load_unifica_turno_gpm.py
 │   └── run_unifica_turno_gpm.py
-├── main.py                       # Ponto de entrada mínimo do projeto (placeholder)
 ├── pyproject.toml
 └── uv.lock
 ```
@@ -85,7 +85,7 @@ Cada pipeline é independente e é executado a partir da sua própria pasta. Ant
 Exemplo — consolidar boletins de medição:
 
 ```bash
-uv run etl-boletim-medicao/run_boletim_medicao.py
+uv run etl-boletim-medicao/run_boletim_medicao.py --ambiente homologacao   # ou producao
 ```
 
 Exemplo — consolidar medições do SIGA (gera um CSV por mês/ano):

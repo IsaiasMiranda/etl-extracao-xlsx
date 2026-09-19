@@ -12,12 +12,14 @@ Não há um ponto de entrada único para a aplicação — o `main.py` na raiz d
 
 ```bash
 uv sync                                            # instala/trava as dependências em .venv/
-uv run etl-boletim-medicao/run_boletim_medicao.py  # executa um pipeline específico
+uv run etl-boletim-medicao/run_boletim_medicao.py --ambiente homologacao   # boletim: ambiente e argumento
+uv run etl-siga-medicao/run_siga_medicao.py                                  # demais pipelines: run_*.py
+uv run pytest                                                                 # 24 testes de normalizar_boletim
 ```
 
-O mesmo padrão (`uv run etl-<nome>/run_<nome>.py`) vale para os cinco pipelines: `etl-boletim-medicao`, `etl-disponibilidade_medicao`, `etl-explode-bm-nfse`, `etl-medicao`, `etl-siga-medicao`.
+O mesmo padrão (`uv run etl-<nome>/run_<nome>.py`) vale para os sete pipelines: `etl-boletim-medicao`, `etl-dedup-xlsx`, `etl-disponibilidade_medicao`, `etl-explode-bm-nfse`, `etl-medicao`, `etl-siga-medicao`, `etl-unifica-turno-gpm`.
 
-Não há suíte de testes, linter ou etapa de build configurada neste repositório — não invente comandos para isso.
+Testes: `uv run pytest` (pytest declarado em `[dependency-groups].dev`; cobre só `normalizar_boletim.py`). Não há linter nem etapa de build.
 
 ## Arquitetura
 
@@ -185,3 +187,18 @@ Plano mostrado e aprovado via plan mode antes de executar.
   separada, documentada como Fase 2 no plano da sessão, condicionada a um
   relatório de impacto (Fase 1, feito no repo `elinsa`) — não faz parte
   deste commit.
+
+### 2026-09-19 — Fim da cópia produção/homologação em `etl-boletim-medicao` (B3)
+
+`producao/` e `homologacao/` eram cópias de diretório: `normalizar_boletim.py`
+byte-idêntico, `load_boletim_medicao.py` diferindo em 1 caminho no `__main__`.
+Unificados em um único módulo na raiz de `etl-boletim-medicao/`
+(`load_boletim_medicao.py`, `normalizar_boletim.py`, `test_normalizar_boletim.py`,
+`run_boletim_medicao.py`). O ambiente virou argumento do runner
+(`--ambiente producao|homologacao`, raiz de dados sobreposta por `--raiz` ou
+pela variável `BASE_GERAL`); os parâmetros de limpeza são os mesmos nos dois.
+A suíte de 24 testes passa a cobrir o código que roda em produção. Removidos
+`main.py` (placeholder) e 3 dumps `.txt` de análise exploratória versionados
+por engano; `.gitignore` ganhou `.env`, `.claude/`, `.pytest_cache/`.
+Commit local na branch `feature/evolucao-plataforma`, sem push (decisão do
+usuário, ver proposta de evolução no repo `elinsa`).

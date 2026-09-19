@@ -700,14 +700,3 @@ def processar_boletins(
     logger.info("=" * 60)
     logger.info("PROCESSAMENTO CONCLUÍDO!")
 
-
-if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s [%(levelname)s] %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
-    ORIGEM = Path(r'D:\base-geral\base-boletim-medicao\source')
-    DESTINO = ORIGEM.parent / 'base-consolidado'
-    PROCESSADOS = ORIGEM.parent / 'arquivos-processados'
-    processar_boletins(ORIGEM, DESTINO, pasta_processados=PROCESSADOS)

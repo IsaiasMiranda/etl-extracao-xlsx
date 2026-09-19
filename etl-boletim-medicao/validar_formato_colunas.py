@@ -8,7 +8,7 @@ Uso:
     uv run etl-boletim-medicao/validar_formato_colunas.py [caminho_consolidado.xlsx]
 
 Se nenhum caminho for informado, usa o consolidado mais recente encontrado em
-``D:\\base-geral\\homologacao\\boletim-medicao\\base-normalizada``.
+``D:\\base-geral\\homologacao\\boletim-medicao\\base-consolidado``.
 """
 
 from __future__ import annotations
@@ -104,7 +104,7 @@ def main() -> None:
     if len(sys.argv) > 1:
         caminho = Path(sys.argv[1])
     else:
-        caminho = _localizar_consolidado_mais_recente(RAIZ_HOMOLOGACAO / 'base-normalizada')
+        caminho = _localizar_consolidado_mais_recente(RAIZ_HOMOLOGACAO / 'base-consolidado')
 
     print(f"Lendo consolidado: {caminho}")
     relatorio = gerar_relatorio(caminho)
