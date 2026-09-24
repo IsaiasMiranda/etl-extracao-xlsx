@@ -10,10 +10,19 @@ Consolida planilhas exportadas do sistema SIGA, padroniza colunas e **segmenta a
 ## Como executar
 
 ```bash
-uv run etl-siga-medicao/run_siga_medicao.py
+uv run etl-siga-medicao/run_siga_medicao.py --ambiente homologacao
+uv run etl-siga-medicao/run_siga_medicao.py --ambiente producao
+uv run etl-siga-medicao/run_siga_medicao.py --ambiente homologacao --raiz D:\outra\pasta
 ```
 
-Ajuste `base_dir`, `pasta_destino` e `pasta_processada` no início de [run_siga_medicao.py](run_siga_medicao.py) antes de rodar.
+`--ambiente` é obrigatório e só muda a raiz de dados (as subpastas e os parâmetros são os mesmos nos dois):
+
+| Ambiente | Raiz |
+|---|---|
+| `producao` | `BASE_GERAL\base-siga-medicao` |
+| `homologacao` | `BASE_GERAL\homologacao\siga-medicao` |
+
+`BASE_GERAL` vem da variável de ambiente (padrão `D:\base-geral`); `--raiz` sobrepõe a raiz do ambiente. Subpastas abaixo da raiz: `source\Medições`, `base-consolidada`, `arquivo-processado`.
 
 ## Funcionalidades
 

@@ -10,10 +10,19 @@ Lê planilhas de Medição de Disponibilidade em layout "largo" (uma coluna por 
 ## Como executar
 
 ```bash
-uv run etl-disponibilidade_medicao/run_disponibilidade_medicao.py
+uv run etl-disponibilidade_medicao/run_disponibilidade_medicao.py --ambiente homologacao
+uv run etl-disponibilidade_medicao/run_disponibilidade_medicao.py --ambiente producao
+uv run etl-disponibilidade_medicao/run_disponibilidade_medicao.py --ambiente homologacao --raiz D:\outra\pasta
 ```
 
-Ajuste os caminhos `origem`, `arquivo_consolidado` e `arquivo_processado` no início de [run_disponibilidade_medicao.py](run_disponibilidade_medicao.py) antes de rodar.
+`--ambiente` é obrigatório e só muda a raiz de dados (as subpastas e os parâmetros são os mesmos nos dois):
+
+| Ambiente | Raiz |
+|---|---|
+| `producao` | `BASE_GERAL\base-disponibilidade-medicao` |
+| `homologacao` | `BASE_GERAL\homologacao\disponibilidade-medicao` |
+
+`BASE_GERAL` vem da variável de ambiente (padrão `D:\base-geral`); `--raiz` sobrepõe a raiz do ambiente. Subpastas abaixo da raiz: `source\MEDICAO_DISPONIBILIDADES - Documentos`, `arquivo-consolidado`, `arquivo-processado`.
 
 ## Modelo de dados final
 

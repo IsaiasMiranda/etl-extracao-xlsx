@@ -80,7 +80,7 @@ Isso cria o ambiente virtual em `.venv/` e instala as dependências travadas em 
 
 ## Uso
 
-Cada pipeline é independente e é executado a partir da sua própria pasta. Antes de rodar, ajuste os caminhos de origem/destino/backup definidos no início do respectivo `run_*.py` (atualmente fixos via `Path(r'...')`, apontando para pastas locais/rede específicas do ambiente onde o projeto roda).
+Cada pipeline é independente e é executado a partir da sua própria pasta. Todos os `run_*.py` exigem `--ambiente producao|homologacao`: o ambiente só muda a raiz de dados (produção nas pastas `BASE_GERAL\base-*` de sempre, homologação em `BASE_GERAL\homologacao\<pipeline>`), com as mesmas subpastas e parâmetros. `BASE_GERAL` vem da variável de ambiente (padrão `D:\base-geral`) e `--raiz` sobrepõe a raiz de qualquer ambiente. Veja o README de cada pipeline para a tabela de caminhos.
 
 Exemplo — consolidar boletins de medição:
 
@@ -91,10 +91,10 @@ uv run etl-boletim-medicao/run_boletim_medicao.py --ambiente homologacao   # ou 
 Exemplo — consolidar medições do SIGA (gera um CSV por mês/ano):
 
 ```bash
-uv run etl-siga-medicao/run_siga_medicao.py
+uv run etl-siga-medicao/run_siga_medicao.py --ambiente homologacao   # ou producao
 ```
 
-O padrão se repete para os demais pipelines (`etl-disponibilidade_medicao`, `etl-explode-bm-nfse`, `etl-medicao`, `etl-unifica-turno-gpm`), sempre executando o `run_*.py` correspondente.
+O padrão se repete para os demais pipelines (`etl-dedup-xlsx`, `etl-disponibilidade_medicao`, `etl-explode-bm-nfse`, `etl-medicao`, `etl-unifica-turno-gpm`), sempre executando o `run_*.py` correspondente com `--ambiente`.
 
 ## Licença
 

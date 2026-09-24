@@ -1,39 +1,63 @@
+r"""Ponto de entrada do ETL que explode a coluna boletim de BM x NFS-e (producao e homologacao).
+
+Uso:
+    uv run etl-explode-bm-nfse/run_explode_bm_nfse.py --ambiente homologacao
+    uv run etl-explode-bm-nfse/run_explode_bm_nfse.py --ambiente producao
+    uv run etl-explode-bm-nfse/run_explode_bm_nfse.py --ambiente homologacao --raiz D:\outra\pasta
+
+Mesmo padrao do etl-boletim-medicao: o ambiente e argumento e so muda a
+raiz de dados; as subpastas e os parametros sao os mesmos nos dois.
+Homologacao fica em BASE_GERAL\homologacao\<pipeline> (BASE_GERAL vem da
+variavel de ambiente, padrao D:\base-geral).
+
+Excecao: em producao a raiz e a propria pasta do script (comportamento
+anterior mantido), nao BASE_GERAL.
+"""
+from __future__ import annotations
+
+import argparse
 import logging
+import os
 from pathlib import Path
 
-# Importa a função principal do módulo de carga/transformação
 from load_explode_bm_nfse import processar_arquivos_explode
 
-# Configuração global de logs
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-)
-logger = logging.getLogger(__name__)
+BASE_GERAL = Path(os.environ.get("BASE_GERAL", "D:/base-geral"))
+RAIZ_POR_AMBIENTE = {
+    "producao":    Path(__file__).parent.resolve(),
+    "homologacao": BASE_GERAL / "homologacao" / "explode-bm-nfse",
+}
 
-if __name__ == '__main__':
-    # Mapeia dinamicamente a pasta exata onde este script está executando
-    DIRETORIO_ATUAL = Path(__file__).parent.resolve()
-    
-    # Origem e destino apontam para a mesma pasta do script
-    PASTA_ORIGEM = DIRETORIO_ATUAL
-    PASTA_DESTINO = DIRETORIO_ATUAL
-    
-    # Coluna que será fragmentada
-    COLUNA_PARA_EXPLODIR = 'boletim'
 
-    logger.info("=" * 60)
-    logger.info("Iniciando rotina de separação de boletins...")
-    logger.info(f"Diretório de busca (Origem): {PASTA_ORIGEM}")
-    logger.info(f"Diretório de gravação (Destino): {PASTA_DESTINO}")
-    logger.info("=" * 60)
+def _args(argv):
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--ambiente", choices=RAIZ_POR_AMBIENTE, required=True)
+    ap.add_argument("--raiz", type=Path, help="raiz do dominio (sobrepoe o padrao do ambiente)")
+    a = ap.parse_args(argv)
+    return a.ambiente, a.raiz or RAIZ_POR_AMBIENTE[a.ambiente]
 
-    # Executa o pipeline de tratamento
+
+def main(argv: list[str] | None = None) -> int:
+    ambiente, raiz = _args(argv)
+
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+    log = logging.getLogger(__name__)
+    log.info("Ambiente %s | raiz %s", ambiente, raiz)
+
+    # Origem e destino sao a mesma pasta (em producao, a do proprio script).
+    pasta_origem = raiz
+    pasta_destino = raiz
+    coluna_para_explodir = "boletim"
+
+    log.info("Iniciando rotina de separação de boletins...")
     processar_arquivos_explode(
-        pasta_origem=PASTA_ORIGEM,
-        pasta_destino=PASTA_DESTINO,
-        coluna_alvo=COLUNA_PARA_EXPLODIR
+        pasta_origem=pasta_origem,
+        pasta_destino=pasta_destino,
+        coluna_alvo=coluna_para_explodir,
     )
+    log.info("Script finalizado.")
+    return 0
 
-    logger.info("Script run_explode_bm_nfse finalizado com sucesso.")
+
+if __name__ == "__main__":
+    raise SystemExit(main())

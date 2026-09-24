@@ -13,11 +13,11 @@ Não há um ponto de entrada único para a aplicação — o `main.py` na raiz d
 ```bash
 uv sync                                            # instala/trava as dependências em .venv/
 uv run etl-boletim-medicao/run_boletim_medicao.py --ambiente homologacao   # boletim: ambiente e argumento
-uv run etl-siga-medicao/run_siga_medicao.py                                  # demais pipelines: run_*.py
+uv run etl-siga-medicao/run_siga_medicao.py --ambiente producao             # todos os run_*.py exigem --ambiente
 uv run pytest                                                                 # 24 testes de normalizar_boletim
 ```
 
-O mesmo padrão (`uv run etl-<nome>/run_<nome>.py`) vale para os sete pipelines: `etl-boletim-medicao`, `etl-dedup-xlsx`, `etl-disponibilidade_medicao`, `etl-explode-bm-nfse`, `etl-medicao`, `etl-siga-medicao`, `etl-unifica-turno-gpm`.
+O mesmo padrão (`uv run etl-<nome>/run_<nome>.py --ambiente producao|homologacao`) vale para os sete pipelines: `etl-boletim-medicao`, `etl-dedup-xlsx`, `etl-disponibilidade_medicao`, `etl-explode-bm-nfse`, `etl-medicao`, `etl-siga-medicao`, `etl-unifica-turno-gpm`.
 
 Testes: `uv run pytest` (pytest declarado em `[dependency-groups].dev`; cobre só `normalizar_boletim.py`). Não há linter nem etapa de build.
 
@@ -26,7 +26,7 @@ Testes: `uv run pytest` (pytest declarado em `[dependency-groups].dev`; cobre s�
 Cada pipeline em `etl-*/` é dividido em exatamente dois arquivos, seguindo a mesma convenção `load_*` / `run_*`:
 
 - **`load_<nome>.py`** — uma biblioteca autocontida com toda a lógica de negócio: detecção de cabeçalho, mapeamento de nomes de coluna, limpeza de linhas, e uma função pública de orquestração `processar_boletins(...)` (ou nome equivalente). É aqui que ficam as regras específicas de cada pipeline e onde mudanças na lógica de extração/limpeza devem ser feitas.
-- **`run_<nome>.py`** — um ponto de entrada executável, enxuto. Define os caminhos fixos de origem/destino/backup (`Path(r'D:\...')`, caminhos locais/de rede específicos da máquina) e chama a função de orquestração do `load_*.py` correspondente. Para ajustar onde um pipeline lê/grava, edite aqui, não no `load_*.py`.
+- **`run_<nome>.py`** — um ponto de entrada executável, enxuto. Recebe `--ambiente producao|homologacao` (obrigatório) e `--raiz` (opcional), resolve a raiz de dados em `RAIZ_POR_AMBIENTE` (sob `BASE_GERAL`), monta as subpastas de origem/destino/backup (iguais nos dois ambientes) e chama a função de orquestração do `load_*.py` correspondente. Para ajustar onde um pipeline lê/grava, edite aqui, não no `load_*.py`.
 
 Os dois arquivos se importam por nome de módulo simples (`from load_boletim_medicao import processar_boletins`), não por caminho de pacote — cada pasta `etl-*/` é tratada como seu próprio diretório de trabalho, não como um pacote Python. Os scripts precisam ser executados tendo essa pasta como raiz de módulo resolvível (`uv run etl-x/run_x.py` funciona porque o Python adiciona o diretório do script ao `sys.path`).
 
@@ -202,3 +202,20 @@ A suíte de 24 testes passa a cobrir o código que roda em produção. Removidos
 por engano; `.gitignore` ganhou `.env`, `.claude/`, `.pytest_cache/`.
 Commit local na branch `feature/evolucao-plataforma`, sem push (decisão do
 usuário, ver proposta de evolução no repo `elinsa`).
+
+### 2026-09-23 — Ambiente produção/homologação em todos os pipelines
+
+Os 6 runners restantes (`etl-dedup-xlsx`, `etl-disponibilidade_medicao`,
+`etl-explode-bm-nfse`, `etl-medicao`, `etl-siga-medicao`,
+`etl-unifica-turno-gpm`) adotaram o padrão do `etl-boletim-medicao`:
+`--ambiente producao|homologacao` **obrigatório**, `--raiz` opcional, um
+dicionário `RAIZ_POR_AMBIENTE` e subpastas iguais nos dois ambientes.
+Produção mantém exatamente os caminhos anteriores. Homologação fica em
+`BASE_GERAL\homologacao\<pipeline>` (`medicao`, `siga-medicao`,
+`disponibilidade-medicao`, `turnos-gpm`, `explode-bm-nfse`, `dedup-xlsx`).
+Duas exceções em produção: `etl-explode-bm-nfse` continua usando a pasta do
+próprio script e `etl-dedup-xlsx` continua usando a pasta da área de trabalho.
+Nenhum `load_*.py` mudou. Os runners de `medicao`/`siga`/`dedup` passam a
+sair com código 1 quando a origem não existe ou quando ocorre um erro fatal
+(antes saíam com 0). **Chamadas agendadas sem `--ambiente` passam a falhar** —
+adicione `--ambiente producao` nelas.

@@ -10,10 +10,19 @@ Pipeline genérico de consolidação de medições: lê múltiplas planilhas `.x
 ## Como executar
 
 ```bash
-uv run etl-medicao/run_medicao.py
+uv run etl-medicao/run_medicao.py --ambiente homologacao
+uv run etl-medicao/run_medicao.py --ambiente producao
+uv run etl-medicao/run_medicao.py --ambiente homologacao --raiz D:\outra\pasta
 ```
 
-Ajuste `base_dir`, `pasta_destino` e `pasta_processada` no início de [run_medicao.py](run_medicao.py) antes de rodar.
+`--ambiente` é obrigatório e só muda a raiz de dados (as subpastas e os parâmetros são os mesmos nos dois):
+
+| Ambiente | Raiz |
+|---|---|
+| `producao` | `BASE_GERAL\base-medicao` |
+| `homologacao` | `BASE_GERAL\homologacao\medicao` |
+
+`BASE_GERAL` vem da variável de ambiente (padrão `D:\base-geral`); `--raiz` sobrepõe a raiz do ambiente. Subpastas abaixo da raiz: `source`, `base-consolidada`, `arquivo-processado`.
 
 ## Funcionalidades
 

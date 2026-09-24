@@ -10,10 +10,21 @@ Lê planilhas `.xlsx`/`.xls` que possuem uma coluna com múltiplos valores conca
 ## Como executar
 
 ```bash
-uv run etl-explode-bm-nfse/run_explode_bm_nfse.py
+uv run etl-explode-bm-nfse/run_explode_bm_nfse.py --ambiente homologacao
+uv run etl-explode-bm-nfse/run_explode_bm_nfse.py --ambiente producao
+uv run etl-explode-bm-nfse/run_explode_bm_nfse.py --ambiente homologacao --raiz D:\outra\pasta
 ```
 
-Diferente dos demais pipelines, este **não usa caminhos fixos de rede** — [run_explode_bm_nfse.py](run_explode_bm_nfse.py) resolve `Path(__file__).parent` em tempo de execução e usa essa mesma pasta como origem e destino, ou seja, basta colocar as planilhas `.xlsx`/`.xls` dentro de `etl-explode-bm-nfse/` antes de rodar.
+`--ambiente` é obrigatório e só muda a raiz de dados (as subpastas e os parâmetros são os mesmos nos dois):
+
+| Ambiente | Raiz |
+|---|---|
+| `producao` | a própria pasta do script (`etl-explode-bm-nfse/`) |
+| `homologacao` | `BASE_GERAL\homologacao\explode-bm-nfse` |
+
+`BASE_GERAL` vem da variável de ambiente (padrão `D:\base-geral`); `--raiz` sobrepõe a raiz do ambiente. Subpastas abaixo da raiz: nenhuma — origem e destino são a própria raiz.
+
+Em produção este pipeline **não usa caminhos fixos de rede** — [run_explode_bm_nfse.py](run_explode_bm_nfse.py) resolve `Path(__file__).parent` em tempo de execução, ou seja, basta colocar as planilhas `.xlsx`/`.xls` dentro de `etl-explode-bm-nfse/` antes de rodar.
 
 ## Funcionalidades
 
